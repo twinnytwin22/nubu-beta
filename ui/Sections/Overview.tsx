@@ -13,8 +13,8 @@ function Overview({ content }: any) {
     const pClass = 'text-zinc-800 dark:text-zinc-200 text-lg text-center';
 
 
-    const renderedContent = content.items.slice().reverse(); // Reverse the array
-   // console.log(content)
+    const renderedContent = content?.items.slice().reverse(); // Reverse the array
+    // console.log(content)
 
     return renderedContent && (
         <div className='bg-white dark:bg-black w-full py-24 px-8 border-b border-zinc-300 dark:border-zinc-800'>

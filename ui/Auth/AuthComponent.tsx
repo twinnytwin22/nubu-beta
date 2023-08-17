@@ -66,7 +66,7 @@ const LoginForm = () => {
                                     //  onChange={(e) => setEmail(e.target.value)}
                                     //  value={email}
                                     id="email"
-                                    className="bg-zinc-50 border border-zinc-300 text-zinc-900 sm:text-sm rounded-md focus:ring-red-300 focus:border-zinc-800 block w-full p-2.5 dark:bg-zinc-700 dark:border-zinc-800 dark:placeholder-zinc-400 dark:text-white dark:focus:ring-red-300 dark:focus:border-red-300"
+                                    className="bg-zinc-50 border border-zinc-300 text-zinc-900 sm:text-sm rounded-md focus:ring-teal-900 focus:border-zinc-800 block w-full p-2.5 dark:bg-zinc-700 dark:border-zinc-800 dark:placeholder-zinc-400 dark:text-white dark:focus:ring-teal-900 dark:focus:border-teal-900"
                                     placeholder="name@company.com"
                                     required
                                 />
@@ -84,7 +84,7 @@ const LoginForm = () => {
                                     //  onChange={(e) => setPassword(e.target.value)}
                                     //  value={password}
                                     placeholder="••••••••"
-                                    className="bg-zinc-50 border border-zinc-300 text-zinc-900 sm:text-sm rounded-md focus:ring-red-300 focus:border-zinc-800 block w-full p-2.5 dark:bg-zinc-700 dark:border-zinc-800 dark:placeholder-zinc-400 dark:text-white dark:focus:ring-red-300 dark:focus:border-red-300"
+                                    className="bg-zinc-50 border border-zinc-300 text-zinc-900 sm:text-sm rounded-md focus:ring-teal-900 focus:border-zinc-800 block w-full p-2.5 dark:bg-zinc-700 dark:border-zinc-800 dark:placeholder-zinc-400 dark:text-white dark:focus:ring-teal-900 dark:focus:border-teal-900"
                                     required
                                 />
                             </div>
@@ -95,7 +95,7 @@ const LoginForm = () => {
                                             id="remember"
                                             aria-describedby="remember"
                                             type="checkbox"
-                                            className="w-4 h-4 border border-zinc-300 rounded bg-zinc-50 focus:ring-3 focus:ring-primary-300 dark:bg-zinc-700 dark:border-zinc-800 dark:focus:ring-red-300 dark:ring-offset-zinc-800"
+                                            className="w-4 h-4 border border-zinc-300 rounded bg-zinc-50 focus:ring-3 focus:ring-primary-300 dark:bg-zinc-700 dark:border-zinc-800 dark:focus:ring-teal-900 dark:ring-offset-zinc-800"
                                         />
                                     </div>
                                     <div className="ml-3 text-sm">
@@ -118,7 +118,7 @@ const LoginForm = () => {
                                 formAction={'/auth/login'}
                                 //  onClick={() =>signInWithEmail(email, password)}
                                 type="submit"
-                                className="w-full text-black font-semibold bg-red-200 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-red-300  rounded-md text-sm px-5 py-2.5 text-center "
+                                className="w-full text-white font-semibold bg-teal-950 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-teal-900  rounded-md text-sm px-5 py-2.5 text-center "
                             >
                                 Sign in
                             </button>
@@ -184,7 +184,7 @@ const SignUpForm = () => {
                                         //  onChange={(e) => setEmail(e.target.value)}
                                         //  value={email}
                                         id="email"
-                                        className="bg-zinc-50 border border-zinc-300 text-zinc-900 sm:text-sm rounded-md focus:ring-red-300 focus:border-zinc-800 block w-full p-2.5 dark:bg-zinc-700 dark:border-zinc-800 dark:placeholder-zinc-400 dark:text-white dark:focus:ring-red-300 dark:focus:border-red-300"
+                                        className="bg-zinc-50 border border-zinc-300 text-zinc-900 sm:text-sm rounded-md focus:ring-teal-900 focus:border-zinc-800 block w-full p-2.5 dark:bg-zinc-700 dark:border-zinc-800 dark:placeholder-zinc-400 dark:text-white dark:focus:ring-teal-900 dark:focus:border-teal-900"
                                         placeholder="name@company.com"
                                         required
                                     />
@@ -202,7 +202,7 @@ const SignUpForm = () => {
                                         //  onChange={(e) => setPassword(e.target.value)}
                                         //  value={password}
                                         placeholder="••••••••"
-                                        className="bg-zinc-50 border border-zinc-300 text-zinc-900 sm:text-sm rounded-md focus:ring-red-300 focus:border-zinc-800 block w-full p-2.5 dark:bg-zinc-700 dark:border-zinc-800 dark:placeholder-zinc-400 dark:text-white dark:focus:ring-red-300 dark:focus:border-red-300"
+                                        className="bg-zinc-50 border border-zinc-300 text-zinc-900 sm:text-sm rounded-md focus:ring-teal-900 focus:border-zinc-800 block w-full p-2.5 dark:bg-zinc-700 dark:border-zinc-800 dark:placeholder-zinc-400 dark:text-white dark:focus:ring-teal-900 dark:focus:border-teal-900"
                                         required
                                     />
                                 </div>
@@ -210,7 +210,7 @@ const SignUpForm = () => {
                                 <button
                                     formAction='/auth/sign-up'
                                     type="submit"
-                                    className="w-full text-black font-semibold bg-red-200 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300  rounded-md text-sm px-5 py-2.5 text-center "
+                                    className="w-full text-white font-semibold bg-teal-950 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300  rounded-md text-sm px-5 py-2.5 text-center "
                                 >
                                     Sign Up
                                 </button>

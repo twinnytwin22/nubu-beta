@@ -9,6 +9,7 @@ import ContactButton from '../Buttons/ContactButton';
 import { imageBuilder } from '@/lib/providers/sanity/sanity';
 //import { imageLoader } from '@/lib/providers/sanity/imageLoader';
 import { usePathname } from 'next/navigation';
+import SignInModal from '../Buttons/SignIn';
 const useMobileMenuStore = create((set: any) => ({
     isMobileMenuOpen: false,
     toggleMobileMenu: () => set((state: { isMobileMenuOpen: any; }) => ({ isMobileMenuOpen: !state.isMobileMenuOpen })),
@@ -19,15 +20,15 @@ function NavBar({ settings }: { settings: any }) {
     const image = imageBuilder(settings?.logo)
     const { isMobileMenuOpen, toggleMobileMenu } = useStore(useMobileMenuStore);
     const pathname = usePathname()
-    const isHidden = pathname.startsWith('/portal') || pathname.startsWith('/login')
+    const isHidden = pathname.startsWith('/') //|| pathname.startsWith('/login')
 
     return (
         <nav className="bg-white dark:bg-black fixed w-full z-20 top-0 left-0 border-b border-zinc-200 dark:border-zinc-700">
             <div className="max-w-screen-2xl flex flex-wrap items-center justify-between mx-auto p-4">
                 <Link href="/" className="flex items-center">
                     <Image
-                        src={image}
-                        className="h-8 mr-3 dark:invert"
+                        src={image!}
+                        className="h-10 mr-3 "
                         alt="Crib Logo"
                         width={145}
                         height={100}
@@ -35,11 +36,8 @@ function NavBar({ settings }: { settings: any }) {
 
                 </Link>
                 <div className="flex md:order-2 gap-4 items-center">
-                    <div className="hidden md:block">
-                        <DarkModeSwitch />
-                    </div>
-                    <ContactButton />
-                    <button
+
+                    <SignInModal />                    <button
                         data-collapse-toggle="navbar-sticky"
                         type="button"
                         className="inline-flex items-center p-2 text-sm text-zinc-500 rounded-sm md:hidden hover:bg-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-200 dark:text-zinc-400  dark:focus:ring-zinc-600"

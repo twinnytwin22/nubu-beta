@@ -37,7 +37,7 @@ export default async function RootLayout({
 
           </main>
 
-          <Footer />
+          <Footer settings={settings} />
         </Providers></body>
     </html>
   )

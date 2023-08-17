@@ -77,7 +77,7 @@ export default function AccountForm() {
     }
 
     return user && (
-        <div className="w-full bg-white mx-auto rounded-md shadow dark:border md:mt-0 sm:max-w-md  dark:bg-black dark:border-zinc-800 p-4 text-black dark:text-zinc-200">
+        <div className="w-full bg-white mx-auto rounded-md shadow dark:border  sm:max-w-md  dark:bg-black dark:border-zinc-800 p-4 text-black dark:text-zinc-200 -mt-16">
             <div className="mb-4">
                 <label htmlFor="email" className="block text-sm font-medium text-zinc-700 dark:text-zinc-200">
                     Email
@@ -99,7 +99,7 @@ export default function AccountForm() {
                     type="text"
                     value={fullname || ''}
                     onChange={(e) => setFullname(e.target.value)}
-                    className="mt-1 px-2 py-1 w-full border rounded-md focus:ring focus:ring-red-300 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900  text-black dark:text-white "
+                    className="mt-1 px-2 py-1 w-full border rounded-md focus:ring focus:ring-teal-900 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900  text-black dark:text-white "
                 />
             </div>
             <div className="mb-4">
@@ -111,7 +111,7 @@ export default function AccountForm() {
                     type="text"
                     value={username || ''}
                     onChange={(e) => setUsername(e.target.value)}
-                    className="mt-1 px-2 py-1 w-full border rounded-md focus:ring focus:ring-red-300 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900  text-black dark:text-white "
+                    className="mt-1 px-2 py-1 w-full border rounded-md focus:ring focus:ring-teal-900 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900  text-black dark:text-white "
                 />
             </div>
             <div className="mb-4">
@@ -123,13 +123,13 @@ export default function AccountForm() {
                     type="url"
                     value={website || ''}
                     onChange={(e) => setWebsite(e.target.value)}
-                    className="mt-1 px-2 py-1 w-full border rounded-md focus:ring focus:ring-red-300 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900  text-black dark:text-white "
+                    className="mt-1 px-2 py-1 w-full border rounded-md focus:ring focus:ring-teal-900 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900  text-black dark:text-white "
                 />
             </div>
 
             <div className="mb-4">
                 <button
-                    className="button primary bg-zinc-700 rounded-small border border-zinc-600 hover:bg-zinc-900 hover:border-zinc-700 block w-full text-white ease-in-out duration-300 text-sm p-1.5"
+                    className="button primary bg-teal-900 rounded-md border border-zinc-600 hover:bg-teal-800 hover:border-zinc-700 block w-full text-white ease-in-out duration-300 text-sm p-1.5"
                     onClick={() => updateProfile({ fullname, username, website, avatar_url })}
                     disabled={loading}
                 >

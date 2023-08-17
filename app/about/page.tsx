@@ -11,8 +11,7 @@ async function page() {
 
         return (
             <React.Fragment>
-                <AboutHeader />
-                <BlogPostsPreview blogPosts={blogPosts.res} />
+                ABOUT
             </React.Fragment>
 
         )

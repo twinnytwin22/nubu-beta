@@ -53,7 +53,7 @@ export function imageBuilder(inputString: any) {
     const dimensions = parts[parts.length - 2]; // Extract the dimensions
     const extension = parts[parts.length - 1]; // Extract the image extension
 
-    const baseURL = "https://cdn.sanity.io/images/6d8w1e5g/production/";
+    const baseURL = `https://cdn.sanity.io/images/48nz7smj/production/`;
     const imageURL = `${baseURL}${imageId}-${dimensions}.${extension}`;
 
     return imageURL;

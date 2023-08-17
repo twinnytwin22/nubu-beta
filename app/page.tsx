@@ -8,27 +8,27 @@ import SocialProof from '@/ui/Sections/SocialProof'
 import React from 'react'
 export default async function Home() {
   const content = await getPageContent()
-  const section = content?.homePage.sections
+  const section = content?.homePage?.sections
 
-  if (content) {
+  if (content && section) {
     return (
       <main className="flex min-h-screen flex-col items-center justify-between  bg-white dark:bg-black  w-full max-w-screen">
         <React.Fragment>
           <React.Suspense>
-            <HomeHeader content={section[0].items[0]} />
-            <SocialProof />
+            <HomeHeader content={section[0]?.items[0]} />
             <Overview content={section[1]} />
           </React.Suspense>
 
-          <Mission />
-          <Services />
-          <OurTech />
+
         </React.Fragment>
 
       </main>
     )
   }
   else {
-    return <p>Loading...</p>
+    return (
+      <div className='w-full h-screen'>
+        <p>Loading...</p>
+      </div>)
   }
 }
