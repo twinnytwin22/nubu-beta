@@ -5,7 +5,6 @@ import { useStore } from 'zustand';
 import DarkModeSwitch from '../Buttons/DarkModeSwitch';
 import Link from 'next/link';
 import Image from 'next/image';
-import ContactButton from '../Buttons/ContactButton';
 import { imageBuilder } from '@/lib/providers/sanity/sanity';
 //import { imageLoader } from '@/lib/providers/sanity/imageLoader';
 import { usePathname } from 'next/navigation';

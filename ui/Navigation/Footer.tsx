@@ -20,7 +20,7 @@ export const Footer = ({ settings }) => {
     const handleOpenModal = () => {
         setOpen(true);
     };
-    return (
+    return user && image && (
         <footer className="bg-white dark:bg-black border-t border-zinc-200 dark:border-zinc-800 relative z-10">
             <div className="max-w-screen-xl px-4 py-16 mx-auto sm:px-6 lg:px-8">
                 <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">

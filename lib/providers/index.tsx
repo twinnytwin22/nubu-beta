@@ -7,13 +7,13 @@ import { AuthContextProvider } from "@/app/context/auth";
 import InvoiceContextProvider from "@/app/context/invoice";
 import SiteContextProvider from "@/app/context/siteContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { clientId, secretKey, storage } from "./thirdweb/thirdweb";
+import { ThirdwebProvider } from "@thirdweb-dev/react";
+import { Ethereum, Polygon, Optimism } from "@thirdweb-dev/chains";
 
-const ThemeProvider = dynamic(
-    async () => {
-        const mod = await import("next-themes");
-        return mod.ThemeProvider;
-    },
-); const queryClient = new QueryClient()
+import { ThemeProvider } from "next-themes";
+
+; const queryClient = new QueryClient()
 
 
 
@@ -23,14 +23,25 @@ export const Providers = ({ children, }: { children: React.ReactNode }) => {
         <QueryClientProvider client={queryClient}>
             <AuthContextProvider>
                 <SiteContextProvider>
-                    <Suspense>
+                    <ThirdwebProvider
+                        secretKey={secretKey!}
+                        clientId={clientId!}
+                        storageInterface={storage}
+                        activeChain={Polygon}
+                        supportedChains={[Ethereum, Polygon, Optimism]}
+                        queryClient={queryClient}
+                        sdkOptions={{
+                            alchemyApiKey: process.env.NEXT_PUBLIC_ALCHEMY_ID
+                        }}>
+                        <Suspense>
 
-                        <ThemeProvider enableSystem={true} attribute="class" defaultTheme="dark">
-                            <InvoiceContextProvider>
-                                {children}
-                            </InvoiceContextProvider>
-                        </ThemeProvider>
-                    </Suspense>
+                            <ThemeProvider enableSystem={true} attribute="class" defaultTheme="dark">
+                                <InvoiceContextProvider>
+                                    {children}
+                                </InvoiceContextProvider>
+                            </ThemeProvider>
+                        </Suspense>
+                    </ThirdwebProvider>
                 </SiteContextProvider>
             </AuthContextProvider>
         </QueryClientProvider>

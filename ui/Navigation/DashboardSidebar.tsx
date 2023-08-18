@@ -24,6 +24,15 @@ function DashboardSidebar({ isOpen }) {
                             <span className="ml-3">Overview</span>
                         </Link>
                     </li>
+                    <li className=''>
+                        <Link
+                            href="/portal/profile"
+                            className="flex items-center p-2 text-base font-medium text-zinc-900 rounded-lg dark:text-white hover:bg-zinc-100 dark:hover:bg-zinc-700 group"
+                        >
+                            <span className="ml-3">Business Profile</span>
+
+                        </Link>
+                    </li>
                     <li>
                         <Link
                             href="/portal/account"
@@ -33,6 +42,7 @@ function DashboardSidebar({ isOpen }) {
 
                         </Link>
                     </li>
+                  
                     <li className='hidden'>
                         <Link
                             href="/portal/invoicing"
