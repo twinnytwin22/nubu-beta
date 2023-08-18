@@ -4,7 +4,7 @@ import { useAuthProvider } from '../context/auth'
 import { PortalPageTitle } from '@/lib/hooks/PortalPageTitle'
 function Portal() {
     const { user, profile } = useAuthProvider()
-    return (
+    return user && (
 
         <section className='w-full h-full mx-auto relative '>
                             <div className='flex px-4 justify-between items-center h-fit w-full mb-3'>
@@ -19,7 +19,7 @@ function Portal() {
 
             </div>
         </section>
-    )
+    ) 
 }
 
 export default Portal

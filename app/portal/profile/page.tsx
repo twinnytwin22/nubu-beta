@@ -5,6 +5,8 @@ import Link from 'next/link';
 import React from 'react';
 import { FaPlus } from 'react-icons/fa';
 
+export const dynamic = 'force-dynamic'
+
 async function ProfilePage() {
     const supabase = supaServerSession(cookies)
     const { data: session } = await supabase.auth.getSession();
