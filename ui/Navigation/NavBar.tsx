@@ -23,14 +23,15 @@ function NavBar({ settings }: { settings: any }) {
 
     return (
         <nav className="bg-white dark:bg-black fixed w-full z-20 top-0 left-0 border-b border-zinc-200 dark:border-zinc-700">
-            <div className="max-w-screen-2xl flex flex-wrap items-center justify-between mx-auto p-4">
+            <div className="max-w-screen flex flex-wrap items-center justify-between mx-auto px-8 p-4">
                 <Link href="/" className="flex items-center">
                     <Image
                         src={image!}
-                        className="h-10 mr-3 "
+                        className="h-10 mr-3 w-auto "
                         alt="Crib Logo"
                         width={145}
                         height={100}
+                        priority
                     />
 
                 </Link>

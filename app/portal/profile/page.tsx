@@ -8,6 +8,7 @@ import { FaPlus } from 'react-icons/fa';
 async function ProfilePage() {
     const supabase = supaServerSession(cookies)
     const { data: session } = await supabase.auth.getSession();
+    
     if (session && session.session?.user.id) {
         try {
             const host = headers().get('host');
@@ -22,36 +23,36 @@ async function ProfilePage() {
             }
 
             const userOrgs = await res.json();
-            if (userOrgs) {
-                return (
-                    <section className='w-full h-full mx-auto relative'>
+            
+            return (
+                <section className='w-full h-full mx-auto relative'>
+                    <div className='flex px-4 justify-between items-center h-fit w-full mb-3'>
                         <PortalPageTitle title='Business Profile' toolTip='Get ya mind right' />
-                        <div className='absolute right-0 z-10'>
-                            <Link href='/portal/entity/create'>
-                                <button
-                                    className="dark:text-black flex items-center space-x-2 text-white bg-teal-900 relative top-16 hover:bg-zinc-800 focus:ring-4 focus:outline-none focus:ring-zinc-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-white dark:hover:bg-zinc-200 dark:focus:ring-zinc-800 ease-in-out duration-300"
-                                > <p>Create Entity</p>
-                                    <FaPlus />
-                                </button>
-                            </Link>
-                        </div>
-                        <div className='relative flex place-items-center min-h-full mx-auto w-full'>
-                            {userOrgs.length > 0 ? (
-                                <div className='text-black dark:text-white min-h-full w-full justify-center mx-auto '>
-                                    <p className='text-center'>You dont have any business profiles.</p>
-                                    <button className='mx-auto justify-center'>Create Entity</button>
-                                    <p>{JSON.stringify(userOrgs)}</p>
-                                </div>
-                            ) : (
-                                <div className='text-black w-full dark:text-white min-h-full justify-center mx-auto'>
-                                    <p className='text-center'>You don't have any business profiles.</p>
-                                    <p className='mx-auto justify-center text-center'>Create Entity</p>
-                                </div>
-                            )}
-                        </div>
-                    </section>
-                )
-            };
+                        <Link href='/portal/entity/create'>
+                            <button className="dark:text-black w-36 flex items-center space-x-2 text-white bg-teal-900 relative  hover:bg-zinc-800 focus:ring-4 focus:outline-none focus:ring-zinc-300 font-medium rounded-lg text-sm px-4 py-2 text-center md:mr-0 dark:bg-white dark:hover:bg-zinc-200 dark:focus:ring-zinc-800 ease-in-out duration-300">
+                                <p>Create Entity</p>
+                                <FaPlus />
+                            </button>
+                        </Link>
+                    </div>
+                    <div className='relative flex top-1/3 h-fit mx-auto w-full'>
+                        {userOrgs.length > 0 ? (
+                            <div className='text-black dark:text-white min-h-full w-full justify-center mx-auto '>
+                                <p className='text-center'>You dont have any business profiles.</p>
+                                <button className='mx-auto justify-center'>Create Entity</button>
+                                <p>{JSON.stringify(userOrgs)}</p>
+                            </div>
+                        ) : (
+                            <div className='text-black w-full dark:text-white min-h-full justify-center mx-auto'>
+                                <p className='text-center'>You dont have any business profiles.</p>
+                                <Link href={'/portal/entity/create'} className=''>
+                                    <p className='mx-auto justify-center text-center underline text-teal-800'>Create Entity</p>
+                                </Link>
+                            </div>
+                        )}
+                    </div>
+                </section>
+            );
         } catch (error) {
             console.error('An error occurred:', error);
             // You can render an error message or component here if needed

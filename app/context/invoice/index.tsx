@@ -44,7 +44,7 @@ interface InvoiceContextProps {
     setTotal: React.Dispatch<React.SetStateAction<any>>;
     width: number;
     componentRef: React.MutableRefObject<any>;
-    handlePrint: () => void;
+   // handlePrint: () => void;
     isEditing: boolean;
     setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
     showModal: boolean;
@@ -93,7 +93,7 @@ export default function InvoiceContextProvider({ children }) {
 
     useEffect(() => {
         if (window.innerWidth < width) {
-            alert("Place your phone in landscape mode for the best experience");
+            console.log("Place your phone in landscape mode for the best experience");
         }
     }, [width]);
 
@@ -198,7 +198,7 @@ export default function InvoiceContextProvider({ children }) {
         setTotal,
         width,
         componentRef,
-        handlePrint,
+      //  handlePrint,
         isEditing,
         setIsEditing,
         showModal,

@@ -28,7 +28,7 @@ export const Footer = ({ settings }) => {
                         <Link href="/" className="flex items-center">
                             <Image
                                 src={image!}
-                                className="h-10 mr-3 "
+                                className="h-10 mr-3 w-auto "
                                 alt="Crib Logo"
                                 width={145}
                                 height={100}

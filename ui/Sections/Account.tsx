@@ -77,7 +77,7 @@ export default function AccountForm() {
     }
 
     return user && (
-        <div className="w-full bg-white mx-auto rounded-md shadow dark:border  sm:max-w-md  dark:bg-black dark:border-zinc-800 p-4 text-black dark:text-zinc-200 -mt-16">
+        <div className="w-full bg-white mx-auto rounded-md shadow dark:border  sm:max-w-md  dark:bg-black dark:border-zinc-800 p-4 text-black dark:text-zinc-200 h-fit">
             <div className="mb-4">
                 <label htmlFor="email" className="block text-sm font-medium text-zinc-700 dark:text-zinc-200">
                     Email

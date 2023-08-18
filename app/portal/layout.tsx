@@ -10,7 +10,7 @@ function PortalLayout({ children }: { children: React.ReactNode }) {
     };
 
     return (
-        <div className='relative flex h-screen overflow-hidden'>
+        <div className='relative flex h-screen overflow-hidden bg-zinc-100 dark:bg-zinc-950'>
             <DashboardSidebar isOpen={isSidebarOpen} />
             <div className='flex-1 overflow-x-hidden overflow-y-auto'>
                 <button
@@ -19,8 +19,8 @@ function PortalLayout({ children }: { children: React.ReactNode }) {
                 >
                     &#9776; {/* Hamburger icon */}
                 </button>
-                <div className='md:ml-64  mx-auto max-h-screen h-full bg-zinc-100 dark:bg-zinc-950 transition-transform  '>
-                    <div className='relative w-full h-full p-8 top-0 left-0 right-0'>
+                <div className='md:ml-64  mx-auto max-h-screen h-full  transition-transform'>
+                    <div className='relative w-full h-full top-24 left-0 right-0  '>
                         {children}
                     </div>
                 </div>

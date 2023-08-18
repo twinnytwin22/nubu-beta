@@ -11,8 +11,8 @@ export const PortalPageTitle = ({ title, toolTip, subtitle }: { title: string, s
     };
 
     return (
-        <div className='w-full relative items-center text-black dark:text-white'>
-            <div className='absolute top-16 left-20 flex items-center space-x-2 z-10'>
+        <div className=' items-center text-black dark:text-white left-8'>
+            <div className=' flex items-center space-x-2 z-10'>
                 <div>
                     <p className='text-xl font-bold'>{title}</p>
 

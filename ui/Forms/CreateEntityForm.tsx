@@ -2,132 +2,149 @@
 import React, { useState } from 'react';
 
 const CreateEntityForm = () => {
-    const [productName, setProductName] = useState('');
-    const [brand, setBrand] = useState('');
-    const [price, setPrice] = useState('');
-    const [category, setCategory] = useState('Electronics');
-    const [itemWeight, setItemWeight] = useState('');
-    const [description, setDescription] = useState('');
+    const [businessName, setBusinessName] = useState<string>('');
+    const [addressLine1, setAddressLine1] = useState<string>('');
+    const [addressLine2, setAddressLine2] = useState<string>('');
+    const [city, setCity] = useState<string>('');
+    const [state, setState] = useState<string>('');
+    const [postalCode, setPostalCode] = useState<string>('');
+    const [description, setDescription] = useState<string>('');
+    const [step, setStep] = useState<number>(1);
 
     const handleFormSubmit = (event) => {
         event.preventDefault();
         // Handle form submission logic here
     };
 
-    return (
-        <div className="bg-white dark:bg-gray-900 w-full max-w-5xl mx-auto">
-            <div className="max-w-2xl px-4 py-8 mx-auto lg:py-16 w-full">
-                <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">Update product</h2>
-                <form onSubmit={handleFormSubmit}>
-                    <div className="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5">
-                        <div className="sm:col-span-2">
-                            <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Name</label>
-                            <input
-                                type="text"
-                                name="name"
-                                id="name"
-                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                value={productName}
-                                onChange={(e) => setProductName(e.target.value)}
-                                placeholder="Type product name"
-                                required
-                            />
+    const handleChangeStep = (step: number) => setStep(step);
+
+    const renderStep1 = () => {
+        return (
+            <div className="bg-white dark:bg-gray-900 h-fit w-full max-w-3xl mx-auto rounded-md border border-zinc-200 shadow-sm">
+                <div className="p-8 mx-auto w-full">
+                    <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">Tell us about your business.</h2>
+                    <form onSubmit={handleFormSubmit}>
+                        <div className="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5">
+                            <div className="sm:col-span-2">
+                                <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Business Name</label>
+                                <input
+                                    type="text"
+                                    name="name"
+                                    id="name"
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-zinc-600 focus:border-zinc-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-zinc-500 dark:focus:border-zinc-500"
+                                    value={businessName}
+                                    onChange={(e) => setBusinessName(e.target.value)}
+                                    placeholder="Type business name"
+                                    required
+                                />
+                            </div>
+                            <div className="w-full">
+                                <label htmlFor="addressLine1" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address Line 1</label>
+                                <input
+                                    type="text"
+                                    name="addressLine1"
+                                    id="addressLine1"
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-zinc-600 focus:border-zinc-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-zinc-500 dark:focus:border-zinc-500"
+                                    value={addressLine1}
+                                    onChange={(e) => setAddressLine1(e.target.value)}
+                                    placeholder="Address line 1"
+                                    required
+                                />
+                            </div>
+                            <div className="w-full">
+                                <label htmlFor="addressLine2" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address Line 2</label>
+                                <input
+                                    type="text"
+                                    name="addressLine2"
+                                    id="addressLine2"
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-zinc-600 focus:border-zinc-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-zinc-500 dark:focus:border-zinc-500"
+                                    value={addressLine2}
+                                    onChange={(e) => setAddressLine2(e.target.value)}
+                                    placeholder="Address line 2"
+                                />
+                            </div>
+                            <div className="w-full">
+                                <label htmlFor="city" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">City</label>
+                                <input
+                                    type="text"
+                                    name="city"
+                                    id="city"
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-zinc-600 focus:border-zinc-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-zinc-500 dark:focus:border-zinc-500"
+                                    value={city}
+                                    onChange={(e) => setCity(e.target.value)}
+                                    placeholder="City"
+                                    required
+                                />
+                            </div>
+                            <div className="w-full">
+                                <label htmlFor="state" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">State</label>
+                                <input
+                                    type="text"
+                                    name="state"
+                                    id="state"
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-zinc-600 focus:border-zinc-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-zinc-500 dark:focus:border-zinc-500"
+                                    value={state}
+                                    onChange={(e) => setState(e.target.value)}
+                                    placeholder="State"
+                                    required
+                                />
+                            </div>
+                            <div className="w-full">
+                                <label htmlFor="postalCode" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Postal Code</label>
+                                <input
+                                    type="text"
+                                    name="postalCode"
+                                    id="postalCode"
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-zinc-600 focus:border-zinc-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-zinc-500 dark:focus:border-zinc-500"
+                                    value={postalCode}
+                                    onChange={(e) => setPostalCode(e.target.value)}
+                                    placeholder="Postal code"
+                                    required
+                                />
+                            </div>
+                            <div className="sm:col-span-2">
+                                <label htmlFor="description" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
+                                <textarea
+                                    value={description}
+                                    id="description"
+                                    rows={8}
+                                    className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-zinc-500 focus:border-zinc-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-zinc-500 dark:focus:border-zinc-500"
+                                    onChange={(e) => setDescription(e.target.value)}
+                                    placeholder="Write a business description here..."
+                                />
+                            </div>
                         </div>
-                        <div className="w-full">
-                            <label htmlFor="brand" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Brand</label>
-                            <input
-                                type="text"
-                                name="brand"
-                                id="brand"
-                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                value={brand}
-                                onChange={(e) => setBrand(e.target.value)}
-                                placeholder="Product brand"
-                                required
-                            />
-                        </div>
-                        <div className="w-full">
-                            <label htmlFor="price" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
-                            <input
-                                type="number"
-                                name="price"
-                                id="price"
-                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                value={price}
-                                onChange={(e) => setPrice(e.target.value)}
-                                placeholder="$299"
-                                required
-                            />
-                        </div>
-                        <div>
-                            <label htmlFor="category" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
-                            <select
-                                id="category"
-                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                value={category}
-                                onChange={(e) => setCategory(e.target.value)}
+                        <div className="flex items-center space-x-4">
+                            <button
+                                type="button"
+                                onClick={() => handleChangeStep(2)}
+                                className="text-white duration-300 ease-in-out bg-teal-800 hover:bg-zinc-800 focus:ring-4 focus:outline-none focus:ring-zinc-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-zinc-600 dark:hover:bg-zinc-700 dark:focus:ring-zinc-800"
                             >
-                                <option value="Electronics">Electronics</option>
-                                <option value="TV">TV/Monitors</option>
-                                <option value="PC">PC</option>
-                                <option value="GA">Gaming/Console</option>
-                                <option value="PH">Phones</option>
-                            </select>
+                                Next
+                            </button>
                         </div>
-                        <div>
-                            <label htmlFor="item-weight" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Item Weight (kg)</label>
-                            <input
-                                type="number"
-                                name="item-weight"
-                                id="item-weight"
-                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                value={itemWeight}
-                                onChange={(e) => setItemWeight(e.target.value)}
-                                placeholder="Ex. 12"
-                                required
-                            />
-                        </div>
-                        <div className="sm:col-span-2">
-                            <label htmlFor="description" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
-                            <textarea
-                                value={description}
-                                id="description"
-                                rows={8}
-                                className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                onChange={(e) => setDescription(e.target.value)}
-                                placeholder="Write a product description here..."
-                            />
-                        </div>
-                    </div>
-                    <div className="flex items-center space-x-4">
-                        <button
-                            type="submit"
-                            className="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-                        >
-                            Update product
-                        </button>
-                        <button
-                            type="button"
-                            className="text-red-600 inline-flex items-center hover:text-white border border-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
-                        >
-                            <svg
-                                className="w-5 h-5 mr-1 -ml-1"
-                                fill="currentColor"
-                                viewBox="0 0 20 20"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path
-                                    fillRule="evenodd"
-                                    d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                                    clipRule="evenodd"
-                                ></path>
-                            </svg>
-                            Delete
-                        </button>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
-        </div>
+        );
+    };
+
+    const renderStep2 = () => {
+        return (
+            <div className="bg-white dark:bg-gray-900 w-full max-w-3xl mx-auto rounded-md border border-zinc-200 shadow-sm">
+                <div className="p-8 mx-auto w-full">
+                    <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">Step 2</h2>
+                    {/* ... Additional steps ... */}
+                </div>
+            </div>
+        );
+    };
+
+    return (
+   <React.Fragment>
+                {step === 1 && renderStep1()}
+                {step === 2 && renderStep2()}
+      </React.Fragment>
     );
 };
 
