@@ -35,7 +35,7 @@ export const Providers = ({ children, }: { children: React.ReactNode }) => {
                         }}>
                         <Suspense>
 
-                            <ThemeProvider enableSystem={true} attribute="class" defaultTheme="dark">
+                            <ThemeProvider enableSystem={true} attribute="class" defaultTheme="light">
                                 <InvoiceContextProvider>
                                     {children}
                                 </InvoiceContextProvider>
