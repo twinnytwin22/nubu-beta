@@ -24,9 +24,9 @@ const DarkModeSwitch = () => {
         type="checkbox"
         id="darkModeSwitch"
         className="sr-only items-center flex"
-        checked={currentTheme === "dark"}
+        checked={currentTheme === "light"}
         onChange={() => {
-          setTheme(currentTheme === "dark" ? "light" : "dark");
+          setTheme(currentTheme === "dark" ? "light" : "light");
         }}
       />
       <label
