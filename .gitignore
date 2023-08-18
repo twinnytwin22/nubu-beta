@@ -63,3 +63,5 @@ artifacts
 
 # Sentry Auth Token
 .sentryclirc
+studio
+/studio

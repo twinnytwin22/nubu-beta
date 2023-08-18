@@ -1,7 +1,6 @@
 import React from 'react'
 //import Image from 'next/image';
-import BlogPostsPreview from '@/ui/Sections/BlogPostsPreview';
-import AboutHeader from '@/ui/Headers/AboutHeader';
+
 import { getBlogPosts } from '@/lib/providers/sanity/sanity';
 
 //const backgroundImage = "/images/azwindmill.jpg"
