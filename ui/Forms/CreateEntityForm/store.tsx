@@ -10,6 +10,7 @@ interface EntityFormState {
   postalCode: string;
   description: string;
   step: number;
+  videoUrl: string;
   setEntityName: (name: string) => void;
   setAddressLine1: (address: string) => void;
   setAddressLine2: (address: string) => void;
@@ -18,11 +19,13 @@ interface EntityFormState {
   setPostalCode: (code: string) => void;
   setDescription: (description: string) => void;
   setStep: (step: number) => void;
+  setVideoUrl: (videoUrl: string) => void;
   handleFormSubmit: (event: React.FormEvent) => void;
   handleChangeStep: (step: number) => void;
+  logVideo: () => void;
 }
 
-const useEntityFormStore = create<EntityFormState>((set) => ({
+const useEntityFormStore = create<EntityFormState>((set, get) => ({
   entityName: '',
   addressLine1: '',
   addressLine2: '',
@@ -31,6 +34,7 @@ const useEntityFormStore = create<EntityFormState>((set) => ({
   postalCode: '',
   description: '',
   step: 1,
+  videoUrl: '',
   setEntityName: (name) => set({ entityName: name }),
   setAddressLine1: (address) => set({ addressLine1: address }),
   setAddressLine2: (address) => set({ addressLine2: address }),
@@ -39,11 +43,15 @@ const useEntityFormStore = create<EntityFormState>((set) => ({
   setPostalCode: (code) => set({ postalCode: code }),
   setDescription: (description) => set({ description: description }),
   setStep: (step) => set({ step: step }),
+  setVideoUrl: (videoUrl) => set({videoUrl: videoUrl}),
   handleFormSubmit: (event) => {
     event.preventDefault();
     // Handle form submission logic here
   },
   handleChangeStep: (step) => set({ step: step }),
+  logVideo: () => {
+    console.log(` Upload URL: ${get().videoUrl}`)
+}
 }));
 
 export default useEntityFormStore;

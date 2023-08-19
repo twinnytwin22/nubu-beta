@@ -24,11 +24,7 @@ export async function middleware(req: NextRequest, event: NextFetchEvent) {
     `frame-src 'self'; ` +
     `object-src 'none'`;
 
-  const kafka = new Kafka({
-    url: "https://real-goldfish-14081-us1-rest-kafka.upstash.io",
-    username: "bWFpbi1yb2RlbnQtNjQwMiQCjmMiRKifErskI3jv8SDO0JyQUDnVuti-_wMZFjo",
-    password: "ZTUzZTg5MWQtNzkyOS00NjlmLTg1MzgtNTA3OTEzMmMxYWQ3",
-  });
+ 
   const message = {
     country: req.geo?.country,
     city: req.geo?.city,
@@ -42,7 +38,6 @@ export async function middleware(req: NextRequest, event: NextFetchEvent) {
 
   //
 
-  const p = kafka.producer();
   const topic = "words";
 
   if (pathname === "/") {
