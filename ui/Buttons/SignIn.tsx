@@ -12,7 +12,7 @@ export const SignInModal = () => {
         <Link href={'/login'}
         >
           <h4
-            className="flex items-center text-white hover:bg-teal-950 bg-teal-900 focus:ring-4  border-zinc-700 border focus:ring-zinc-300 duration-300 ease-in-out text-xs rounded-lg lg:text-sm px-3 lg:px-5 py-2 lg:py-2.5   focus:outline-none   shadow-zinc-200 hover:shadow-sm"
+            className="flex items-center text-white dark:text-zinc-900 hover:bg-teal-950 dark:hover:bg-zinc-200 bg-teal-900 dark:bg-white focus:ring-4  border-zinc-700 border focus:ring-zinc-300 duration-300 ease-in-out text-xs rounded-lg lg:text-sm px-3 lg:px-5 py-2 lg:py-2.5   focus:outline-none   shadow-zinc-200 hover:shadow-sm"
 
           >{`${!user ? 'Sign In' : 'My Account'}`}</h4>
 

@@ -2,11 +2,14 @@
 import React from "react";
 
 import AuthComponent from "@/ui/Auth/AuthComponent";
+import { getSiteSettings } from "@/lib/providers/sanity/sanity";
 
-function page() {
+async function page() {
+    const settings = await getSiteSettings()
+
     return (
         <div className="h-screen items-center flex w-full bg-zinc-100 dark:bg-black">
-            <AuthComponent />
+            <AuthComponent settings={settings} />
         </div>
     );
 }

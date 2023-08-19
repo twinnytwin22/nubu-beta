@@ -48,7 +48,7 @@ async function ProfilePage() {
                             <div className='text-black w-full dark:text-white min-h-full justify-center mx-auto'>
                                 <p className='text-center'>You dont have any business profiles.</p>
                                 <Link href={'/portal/entity/create'} className=''>
-                                    <p className='mx-auto justify-center text-center underline text-teal-800'>Create Entity</p>
+                                    <p className='mx-auto justify-center text-center underline text-teal-800 dark:text-teal-600'>Create Entity</p>
                                 </Link>
                             </div>
                         )}

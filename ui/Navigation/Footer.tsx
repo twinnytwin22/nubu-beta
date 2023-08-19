@@ -8,38 +8,47 @@ import { useContactButtonStore } from '@/lib/stores/contactButtonStore';
 import { useAuthProvider } from '@/app/context/auth';
 import { imageBuilder } from '@/lib/providers/sanity/sanity';
 export const Footer = ({ settings }) => {
+    console.log(settings)
     const image = imageBuilder(settings?.logo)
-
+    const darkImage = imageBuilder(settings?.altLogo)
     const pathname = usePathname()
     const { user } = useAuthProvider()
     if (pathname.startsWith('/portal')) {
-        return null
+        return <></>
     }
 
     const setOpen = useContactButtonStore((state: any) => state.setOpen);
     const handleOpenModal = () => {
         setOpen(true);
     };
-    return image && (
-        <footer className="bg-white dark:bg-black border-t border-zinc-200 dark:border-zinc-800 relative z-10">
+
+    return  (
+        <footer className="bg-white dark:bg-teal-950 border-t border-zinc-200 dark:border-zinc-800 relative z-10">
             <div className="max-w-screen-xl px-4 py-16 mx-auto sm:px-6 lg:px-8">
                 <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
                     <div>
-                        <Link href="/" className="flex items-center">
+                        <Link href="/" className="flex items-center ">
                             <Image
                                 src={image!}
-                                className="h-10 mr-3 w-auto "
+                                className="h-10 mr-3 w-auto dark:hidden block"
+                                alt="Crib Logo"
+                                width={145}
+                                height={100}
+                            />
+                              <Image
+                                src={darkImage!}
+                                className="h-10 mr-3 w-auto hidden dark:block "
                                 alt="Crib Logo"
                                 width={145}
                                 height={100}
                             />
                         </Link>
                         <p className="max-w-xs mt-4 text-sm text-zinc-600 dark:text-zinc-400">
-                            CRIB, LLC
-                            <br />
-                            Phoenix, Arizona, USA
-                            <br />
-                            info@cribnetwork.io
+Virtual Business Directory                           
+ <br />
+Ferguson, MO, USA                            
+<br />
+                            info@vbd.com
                         </p>
                         <div className="flex mt-8 space-x-6 text-zinc-600">
                             <Link href={fbUrl} className="hover:opacity-75" target="_blank" rel="noreferrer">
@@ -127,6 +136,6 @@ export const Footer = ({ settings }) => {
             </div>
         </footer>
     )
-}
 
+}
 export default Footer;
