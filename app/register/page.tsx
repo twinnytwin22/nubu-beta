@@ -12,9 +12,7 @@ async function page() {
             <AuthComponent settings={settings} />
         </div>
     );
- } else {
-    return 'loading...'
- }
+ } 
 }
 
 export default page;

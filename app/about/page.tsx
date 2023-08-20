@@ -3,7 +3,7 @@ import React from 'react'
 
 
 //const backgroundImage = "/images/azwindmill.jpg"
-async function page() {
+function page() {
    // const blogPosts = await getBlogPosts()
     //if (blogPosts.success) {
 

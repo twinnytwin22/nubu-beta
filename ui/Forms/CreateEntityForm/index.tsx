@@ -31,17 +31,17 @@ const CreateEntityForm = () => {
   };
 
   const handleChangeStep = (step: number) => setStep(step);
-  const [isRecording, setIsRecording] = useState(false);
-  const [isUploaded, setIsUploaded] = useState(false);
+  const [toRecording, setToRecording] = useState(false);
+  const [toUploaded, setToUploaded] = useState(false);
 
   const handleRecordClick = () => {
-    setIsRecording(true);
-    setIsUploaded(false);
+    setToRecording(true);
+    setToUploaded(false);
   };
 
   const handleUploadClick = () => {
-    setIsRecording(false);
-    setIsUploaded(true);
+    setToRecording(false);
+    setToUploaded(true);
   };
   const renderStep1 = () => {
     return (
@@ -204,7 +204,7 @@ const CreateEntityForm = () => {
               <ul className="grid w-full gap-6 md:grid-cols-2">
     <li onClick={handleUploadClick}>
         <input type="radio" id="hosting-small" name="hosting" value="hosting-small" className="hidden peer" required/>
-        <label htmlFor="hosting-small" className="inline-flex items-center justify-between w-full p-5 text-zinc-500 bg-white border border-zinc-200 rounded-lg cursor-pointer dark:hover:text-zinc-300 dark:border-zinc-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:bg-zinc-800 dark:hover:bg-zinc-700">                           
+        <label htmlFor="hosting-small" className="inline-flex items-center justify-between w-full p-5 text-zinc-500 bg-white border border-zinc-200 rounded-lg cursor-pointer dark:hover:text-zinc-300 dark:border-zinc-700 dark:peer-checked:text-black peer-checked:border-black peer-checked:text-black hover:text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:bg-zinc-800 dark:hover:bg-zinc-700">                           
             <div className="block">
                 <div className="w-full text-lg font-semibold">Upload</div>
                 <div className="w-full">Already have your introduction video?</div>
@@ -216,7 +216,7 @@ const CreateEntityForm = () => {
     </li>
     <li onClick={handleRecordClick}>
         <input type="radio" id="hosting-big" name="hosting" value="hosting-big" className="hidden peer"/>
-        <label htmlFor="hosting-big" className="inline-flex items-center justify-between w-full p-5 text-zinc-500 bg-white border border-zinc-200 rounded-lg cursor-pointer dark:hover:text-zinc-300 dark:border-zinc-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:bg-zinc-800 dark:hover:bg-zinc-700">
+        <label htmlFor="hosting-big" className="inline-flex items-center justify-between w-full p-5 text-zinc-500 bg-white border border-zinc-200 rounded-lg cursor-pointer dark:hover:text-zinc-300 dark:border-zinc-700 dark:peer-checked:text-black peer-checked:border-black peer-checked:text-black hover:text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:bg-zinc-800 dark:hover:bg-zinc-700">
             <div className="block">
                 <div className="w-full text-lg font-semibold">Record</div>
                 <div className="w-full">Get started with a fresh introduction.</div>
@@ -228,8 +228,8 @@ const CreateEntityForm = () => {
     </li>
 </ul>
             </div>
-            {isRecording && <VideoRecorder />}
-            {isUploaded && (
+            {toRecording && <VideoRecorder />}
+            {toUploaded && (
               <div className="flex items-center justify-center w-full h-full aspect-video">
                 <label
                   htmlFor="dropzone-file"
@@ -265,7 +265,7 @@ const CreateEntityForm = () => {
                     accept="video/*"
                     onChange={(e) => {
                       // Handle video upload logic here
-                      // Once the video is uploaded, set setIsUploaded(true)
+                      // Once the video is uploaded, set setToUploaded(true)
                     }}
                   />
                 </label>
