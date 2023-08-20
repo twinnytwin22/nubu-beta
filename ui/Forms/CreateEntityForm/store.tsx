@@ -1,5 +1,5 @@
-'use client'
-import { create } from 'zustand';
+"use client";
+import { create } from "zustand";
 
 interface EntityFormState {
   entityName: string;
@@ -11,6 +11,9 @@ interface EntityFormState {
   description: string;
   step: number;
   videoUrl: string;
+  toRecording: boolean;
+  toUploaded: boolean;
+
   setEntityName: (name: string) => void;
   setAddressLine1: (address: string) => void;
   setAddressLine2: (address: string) => void;
@@ -20,21 +23,26 @@ interface EntityFormState {
   setDescription: (description: string) => void;
   setStep: (step: number) => void;
   setVideoUrl: (videoUrl: string) => void;
+  setToRecording: (value: boolean) => void;
+  setToUploaded: (value: boolean) => void;
   handleFormSubmit: (event: React.FormEvent) => void;
   handleChangeStep: (step: number) => void;
   logVideo: () => void;
 }
 
 const useEntityFormStore = create<EntityFormState>((set, get) => ({
-  entityName: '',
-  addressLine1: '',
-  addressLine2: '',
-  city: '',
-  state: '',
-  postalCode: '',
-  description: '',
+  entityName: "",
+  addressLine1: "",
+  addressLine2: "",
+  city: "",
+  state: "",
+  postalCode: "",
+  description: "",
   step: 1,
-  videoUrl: '',
+  videoUrl: "",
+  toRecording: false,
+  toUploaded: false,
+
   setEntityName: (name) => set({ entityName: name }),
   setAddressLine1: (address) => set({ addressLine1: address }),
   setAddressLine2: (address) => set({ addressLine2: address }),
@@ -43,15 +51,17 @@ const useEntityFormStore = create<EntityFormState>((set, get) => ({
   setPostalCode: (code) => set({ postalCode: code }),
   setDescription: (description) => set({ description: description }),
   setStep: (step) => set({ step: step }),
-  setVideoUrl: (videoUrl) => set({videoUrl: videoUrl}),
+  setVideoUrl: (videoUrl) => set({ videoUrl: videoUrl }),
+  setToRecording: (value) => set({ toRecording: value }),
+  setToUploaded: (value) => set({ toUploaded: value }),
   handleFormSubmit: (event) => {
     event.preventDefault();
     // Handle form submission logic here
   },
   handleChangeStep: (step) => set({ step: step }),
   logVideo: () => {
-    console.log(` Upload URL: ${get().videoUrl}`)
-}
+    console.log(` Upload URL: ${get().videoUrl}`);
+  },
 }));
 
 export default useEntityFormStore;

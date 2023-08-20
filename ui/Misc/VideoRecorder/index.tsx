@@ -26,7 +26,7 @@ const VideoRecorder = () => {
     setUploading,
     setInProgress,
   } = useMediaStore();
-  const { logVideo, setVideoUrl } = useEntityFormStore();
+  const { logVideo, toRecording } = useEntityFormStore();
   const [resetRecording, setResetRecording] = useState(false);
   const [videoFile, setVideoFile] = useState<any>([]);
   const { mutateAsync: upload } = useStorageUpload({
@@ -122,7 +122,7 @@ const VideoRecorder = () => {
   };
   useEffect(() => {
     initializeMedia();
-  }, [resetRecording]);
+  }, [resetRecording,toRecording]);
  
 
   useEffect(() => {

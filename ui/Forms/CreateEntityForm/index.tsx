@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import useEntityFormStore from "./store";
 import VideoRecorder from "@/ui/Misc/VideoRecorder";
 import { useMediaStore } from "@/ui/Misc/VideoRecorder/store";
@@ -24,6 +24,9 @@ const CreateEntityForm = () => {
     description,
     setDescription,
     videoUrl,
+    toRecording, 
+    setToRecording,
+    toUploaded, setToUploaded
   } = useEntityFormStore();
   const { uploaded } = useMediaStore();
   const handleFormSubmit = (event: any) => {
@@ -32,8 +35,7 @@ const CreateEntityForm = () => {
   };
 
   const handleChangeStep = (step: number) => setStep(step);
-  const [toRecording, setToRecording] = useState(false);
-  const [toUploaded, setToUploaded] = useState(false);
+
 
   const handleRecordClick = () => {
     setToRecording(true);
