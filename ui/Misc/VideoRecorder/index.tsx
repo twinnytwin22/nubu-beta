@@ -54,7 +54,7 @@ const VideoRecorder = () => {
         setInProgress("video");
         // Convert recorded chunks into a Blob
         // Create a File object from the Blob (optional, but might be needed depending on your upload function)
-        console.log(videoFile, "FILE");
+     //   console.log(videoFile, "FILE");
         // Upload the video
         const videoUri = await upload({
           data: [videoFile],
@@ -64,7 +64,7 @@ const VideoRecorder = () => {
         const finalUrl = useIpfsImage(videoUri[0]);
         useEntityFormStore.setState({ videoUrl: finalUrl });
         logVideo();
-        console.log(finalUrl + ".mp4");
+       // console.log(finalUrl + ".mp4");
       }
     } catch (error) {
       // Handle upload errors
@@ -80,7 +80,7 @@ const VideoRecorder = () => {
     setDoneRecording(false);
     setUploaded(false);
     setUploading(false);
-    setResetRecording(true);
+    setResetRecording(prevState => !prevState);
 
     // Reinitialize the media stream
     try {
@@ -123,6 +123,7 @@ const VideoRecorder = () => {
   useEffect(() => {
     initializeMedia();
   }, [resetRecording]);
+ 
 
   useEffect(() => {
     if (mediaStream) {
@@ -147,13 +148,12 @@ const VideoRecorder = () => {
         type: "video/mp4",
       });
       setVideoFile(videoFile);
-      console.log(videoFile, "FILE");
+    //  console.log(videoFile, "FILE");
 
-      // Do something with the recorded chunks
     };
       setMediaRecorder(recorder);
     }
-  }, [mediaStream]);
+  }, [mediaStream, resetRecording]);
 
   const startRecording = () => {
     if (mediaRecorder) {
@@ -178,7 +178,7 @@ const VideoRecorder = () => {
       ? URL.createObjectURL(recordedChunks[0])
       : null;
 
-  console.log(videoSourceURL);
+ // console.log(videoSourceURL);
   return (
     <div className="relative aspect-video">
       {mediaStream && !doneRecording && (
