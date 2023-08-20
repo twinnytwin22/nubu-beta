@@ -249,7 +249,7 @@ const CreateEntityForm = () => {
               </li>
             </ul>
           </div>
-          {toRecording && <VideoRecorder />}
+          {toRecording && <VideoRecorder toRecording={toRecording} />}
           {toUploaded && (
             <div className="flex items-center justify-center w-full h-full aspect-video">
               <label

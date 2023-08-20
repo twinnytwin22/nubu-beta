@@ -6,7 +6,8 @@ import { useMediaStore } from "./store";
 import { useStorageUpload } from "@thirdweb-dev/react";
 import useEntityFormStore from "@/ui/Forms/CreateEntityForm/store";
 import { useIpfsImage } from "@/lib/site/constants";
-const VideoRecorder = () => {
+import TimeLapsed from "./TimeLapsed";
+const VideoRecorder = ({toRecording}) => {
   const {
     mediaStream,
     mediaRecorder,
@@ -26,7 +27,7 @@ const VideoRecorder = () => {
     setUploading,
     setInProgress,
   } = useMediaStore();
-  const { logVideo, toRecording } = useEntityFormStore();
+  const { logVideo } = useEntityFormStore();
   const [resetRecording, setResetRecording] = useState(false);
   const [videoFile, setVideoFile] = useState<any>([]);
   const { mutateAsync: upload } = useStorageUpload({
@@ -201,7 +202,12 @@ const VideoRecorder = () => {
         </>
       )}
       {isRecording && (
+        <React.Fragment>
+          <div className="absolute top-16 left-6">
+          <TimeLapsed isRecording={isRecording}/>
+          </div>
         <div className="rounded-full absolute top-16 right-6 bg-red-600 h-2.5 w-2.5 p-2.5  animate-pulse" />
+      </React.Fragment>
       )}
       {!doneRecording && (
         <div className="absolute bottom-5 right-5 z-50">
