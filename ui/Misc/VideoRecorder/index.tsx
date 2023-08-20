@@ -196,7 +196,7 @@ const VideoRecorder = () => {
             ref={videoRef}
             autoPlay
             muted
-            className="mx-auto rounded-lg shadow-sm border border-zinc-100 dark:border-zinc-800 aspect-video bg-teal-950"
+            className="mx-auto rounded-lg shadow-sm border border-zinc-100 dark:border-zinc-800 aspect-video"
           />
         </>
       )}

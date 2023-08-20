@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import useEntityFormStore from "./store";
 import VideoRecorder from "@/ui/Misc/VideoRecorder";
 import { useMediaStore } from "@/ui/Misc/VideoRecorder/store";
+import { FaCamera, FaUpload } from "react-icons/fa";
 
 const CreateEntityForm = () => {
   const {
@@ -200,101 +201,105 @@ const CreateEntityForm = () => {
           </h2>
 
           <div className="mb-8 text-black dark:text-white ">
-           
-              <ul className="grid w-full gap-6 md:grid-cols-2">
-    <li onClick={handleUploadClick}>
-        <input type="radio" id="hosting-small" name="hosting" value="hosting-small" className="hidden peer" required/>
-        <label htmlFor="hosting-small" className="inline-flex items-center justify-between w-full p-5 text-zinc-500 bg-white border border-zinc-200 rounded-lg cursor-pointer dark:hover:text-zinc-300 dark:border-zinc-700 dark:peer-checked:text-black peer-checked:border-black peer-checked:text-black hover:text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:bg-zinc-800 dark:hover:bg-zinc-700">                           
-            <div className="block">
-                <div className="w-full text-lg font-semibold">Upload</div>
-                <div className="w-full">Already have your introduction video?</div>
-            </div>
-            <svg className="w-5 h-5 ml-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-            </svg>
-        </label>
-    </li>
-    <li onClick={handleRecordClick}>
-        <input type="radio" id="hosting-big" name="hosting" value="hosting-big" className="hidden peer"/>
-        <label htmlFor="hosting-big" className="inline-flex items-center justify-between w-full p-5 text-zinc-500 bg-white border border-zinc-200 rounded-lg cursor-pointer dark:hover:text-zinc-300 dark:border-zinc-700 dark:peer-checked:text-black peer-checked:border-black peer-checked:text-black hover:text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:bg-zinc-800 dark:hover:bg-zinc-700">
-            <div className="block">
-                <div className="w-full text-lg font-semibold">Record</div>
-                <div className="w-full">Get started with a fresh introduction.</div>
-            </div>
-            <svg className="w-5 h-5 ml-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-            </svg>
-        </label>
-    </li>
-</ul>
-            </div>
-            {toRecording && <VideoRecorder />}
-            {toUploaded && (
-              <div className="flex items-center justify-center w-full h-full aspect-video">
+            <ul className="grid w-full gap-6 md:grid-cols-2">
+              <li onClick={handleUploadClick}>
+                <input
+                  type="radio"
+                  id="hosting-small"
+                  name="hosting"
+                  value="hosting-small"
+                  className="hidden peer"
+                  required
+                />
                 <label
-                  htmlFor="dropzone-file"
-                  className="flex flex-col items-center justify-center w-full h-64 border-2 border-zinc-300 border-dashed rounded-lg cursor-pointer bg-zinc-50 dark:hover:bg-bray-800 dark:bg-zinc-700 hover:bg-zinc-100 dark:border-zinc-600 dark:hover:border-zinc-500 dark:hover:bg-zinc-600"
+                  htmlFor="hosting-small"
+                  className="inline-flex items-center justify-between w-full p-5 text-zinc-500 bg-white border border-zinc-200 rounded-lg cursor-pointer dark:hover:text-zinc-300 dark:border-zinc-700 dark:peer-checked:text-black peer-checked:border-black peer-checked:text-black hover:text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:bg-zinc-800 dark:hover:bg-zinc-700"
                 >
-                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                    <svg
-                      className="w-8 h-8 mb-4 text-zinc-500 dark:text-zinc-400"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 20 16"
-                    >
-                      <path
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
-                      />
-                    </svg>
-                    <p className="mb-2 text-sm text-zinc-500 dark:text-zinc-400">
-                      <span className="font-semibold">Click to upload</span> or
-                      drag and drop
-                    </p>
-                    <p className="text-xs text-zinc-500 dark:text-zinc-400 ">
-                      MP4, MOV (MAX. 100MB)
-                    </p>
+                  <div className="block">
+                    <div className="w-full text-lg font-semibold">Upload</div>
+                    <div className="w-full text-sm">
+                      Already have your introduction video?
+                    </div>
                   </div>
-                  <input
-                    className="hidden"
-                    type="file"
-                    accept="video/*"
-                    onChange={(e) => {
-                      // Handle video upload logic here
-                      // Once the video is uploaded, set setToUploaded(true)
-                    }}
-                  />
+                 <FaUpload/>
                 </label>
-              </div>
+              </li>
+              <li onClick={handleRecordClick}>
+                <input
+                  type="radio"
+                  id="hosting-big"
+                  name="hosting"
+                  value="hosting-big"
+                  className="hidden peer"
+                />
+                <label
+                  htmlFor="hosting-big"
+                  className="inline-flex items-center justify-between w-full p-5 text-zinc-500 bg-white border border-zinc-200 rounded-lg cursor-pointer dark:hover:text-zinc-300 dark:border-zinc-700 dark:peer-checked:text-black peer-checked:border-black peer-checked:text-black hover:text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:bg-zinc-800 dark:hover:bg-zinc-700"
+                >
+                  <div className="block">
+                    <div className="w-full text-lg font-semibold">Record</div>
+                    <div className="w-full text-sm">
+                      Get started with a fresh introduction.
+                    </div>
+                  </div>
+                <FaCamera/>
+                </label>
+              </li>
+            </ul>
+          </div>
+          {toRecording && <VideoRecorder />}
+          {toUploaded && (
+            <div className="flex items-center justify-center w-full h-full aspect-video">
+              <label
+                htmlFor="dropzone-file"
+                className="flex flex-col items-center justify-center w-full h-64 border-2 border-zinc-300 border-dashed rounded-lg cursor-pointer bg-zinc-50 dark:hover:bg-bray-800 dark:bg-zinc-700 hover:bg-zinc-100 dark:border-zinc-600 dark:hover:border-zinc-500 dark:hover:bg-zinc-600"
+              >
+                <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                 <FaUpload className="text-zinc-500 dark:text-zinc-400 mb-2"/>
+                  <p className="mb-2 text-sm text-zinc-500 dark:text-zinc-400">
+                    <span className="font-semibold">Click to upload</span> or
+                    drag and drop
+                  </p>
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400 ">
+                    MP4, MOV (MAX. 100MB)
+                  </p>
+                </div>
+                <input
+                  className="hidden"
+                  type="file"
+                  accept="video/*"
+                  onChange={(e) => {
+                    // Handle video upload logic here
+                    // Once the video is uploaded, set setToUploaded(true)
+                  }}
+                />
+              </label>
+            </div>
+          )}
+        </div>
+        <form>
+          <div className="flex items-center space-x-4">
+            {uploaded && (
+              <>
+                <button
+                  type="button"
+                  onClick={() => handleChangeStep(1)}
+                  className="text-white duration-300 ease-in-out bg-teal-800 hover:bg-zinc-800 focus:ring-4 focus:outline-none focus:ring-zinc-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-zinc-600 dark:hover:bg-zinc-900 dark:focus:ring-zinc-800"
+                >
+                  Back
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleChangeStep(3)}
+                  className="text-white duration-300 ease-in-out bg-teal-800 hover:bg-zinc-800 focus:ring-4 focus:outline-none focus:ring-zinc-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-zinc-600 dark:hover:bg-zinc-900 dark:focus:ring-zinc-800"
+                >
+                  Next
+                </button>
+              </>
             )}
           </div>
-          <form>
-            <div className="flex items-center space-x-4">
-              {uploaded && (
-                <>
-                  <button
-                    type="button"
-                    onClick={() => handleChangeStep(1)}
-                    className="text-white duration-300 ease-in-out bg-teal-800 hover:bg-zinc-800 focus:ring-4 focus:outline-none focus:ring-zinc-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-zinc-600 dark:hover:bg-zinc-900 dark:focus:ring-zinc-800"
-                  >
-                    Back
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => handleChangeStep(3)}
-                    className="text-white duration-300 ease-in-out bg-teal-800 hover:bg-zinc-800 focus:ring-4 focus:outline-none focus:ring-zinc-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-zinc-600 dark:hover:bg-zinc-900 dark:focus:ring-zinc-800"
-                  >
-                    Next
-                  </button>
-                </>
-              )}
-            </div>
-          </form>
-        </div>
+        </form>
+      </div>
     );
   };
 
