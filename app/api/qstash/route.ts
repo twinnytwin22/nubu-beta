@@ -10,8 +10,3 @@ async function POST() {
 
 export default verifySignature(POST);
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
