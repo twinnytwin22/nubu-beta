@@ -126,7 +126,9 @@ const VideoRecorder = ({toRecording}) => {
     initializeMedia();
   }, [resetRecording]);
  
-
+  useEffect(() => {
+    initializeMedia();
+  }, []);
   useEffect(() => {
     if (mediaStream) {
       const recorder = new MediaRecorder(mediaStream, {
