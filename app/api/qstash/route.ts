@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { verifySignature } from "@upstash/qstash/nextjs";
+//import { verifySignature } from "@upstash/qstash/nextjs";
 
 // This function will handle your POST request
 export async function POST(request, response) {
@@ -14,5 +14,4 @@ export async function POST(request, response) {
 }
 
 // Use verifySignature to ensure the request is coming from a trusted source
-export default verifySignature(POST);
 
