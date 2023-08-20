@@ -215,7 +215,7 @@ const CreateEntityForm = () => {
                 />
                 <label
                   htmlFor="hosting-small"
-                  className="inline-flex items-center justify-between w-full p-5 text-zinc-500 bg-white border border-zinc-200 rounded-lg cursor-pointer dark:hover:text-zinc-300 dark:border-zinc-700 dark:peer-checked:text-black peer-checked:border-black peer-checked:text-black hover:text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:bg-zinc-800 dark:hover:bg-zinc-700"
+                  className="inline-flex items-center justify-between w-full p-5 text-zinc-500 bg-white border border-zinc-200 rounded-lg cursor-pointer dark:hover:text-zinc-300 dark:border-zinc-700 dark:peer-checked:text-teal-600 peer-checked:border-teal-600 peer-checked:text-black hover:text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:bg-zinc-800 dark:hover:bg-zinc-700"
                 >
                   <div className="block">
                     <div className="w-full text-lg font-semibold">Upload</div>
@@ -236,7 +236,7 @@ const CreateEntityForm = () => {
                 />
                 <label
                   htmlFor="hosting-big"
-                  className="inline-flex items-center justify-between w-full p-5 text-zinc-500 bg-white border border-zinc-200 rounded-lg cursor-pointer dark:hover:text-zinc-300 dark:border-zinc-700 dark:peer-checked:text-black peer-checked:border-black peer-checked:text-black hover:text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:bg-zinc-800 dark:hover:bg-zinc-700"
+                  className="inline-flex items-center justify-between w-full p-5 text-zinc-500 bg-white border border-zinc-200 rounded-lg cursor-pointer dark:hover:text-zinc-300 dark:border-zinc-700 dark:peer-checked:text-teal-600 peer-checked:border-teal-600 peer-checked:text-black hover:text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:bg-zinc-800 dark:hover:bg-zinc-700"
                 >
                   <div className="block">
                     <div className="w-full text-lg font-semibold">Record</div>
@@ -254,7 +254,7 @@ const CreateEntityForm = () => {
             <div className="flex items-center justify-center w-full h-full aspect-video">
               <label
                 htmlFor="dropzone-file"
-                className="flex flex-col items-center justify-center w-full h-64 border-2 border-zinc-300 border-dashed rounded-lg cursor-pointer bg-zinc-50 dark:hover:bg-bray-800 dark:bg-zinc-700 hover:bg-zinc-100 dark:border-zinc-600 dark:hover:border-zinc-500 dark:hover:bg-zinc-600"
+                className="flex flex-col items-center justify-center w-full border-2 border-zinc-300 border-dashed rounded-lg cursor-pointer bg-zinc-50 dark:hover:bg-bray-800 dark:bg-zinc-700 hover:bg-zinc-100 dark:border-zinc-600 dark:hover:border-zinc-500 dark:hover:bg-zinc-600 aspect-video h-full"
               >
                 <div className="flex flex-col items-center justify-center pt-5 pb-6">
                  <FaUpload className="text-zinc-500 dark:text-zinc-400 mb-2"/>
