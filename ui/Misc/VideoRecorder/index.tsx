@@ -124,7 +124,7 @@ const VideoRecorder = ({toRecording}) => {
   };
   useEffect(() => {
     initializeMedia();
-  }, []);
+  }, [resetRecording]);
  
 
   useEffect(() => {
@@ -183,7 +183,7 @@ const VideoRecorder = ({toRecording}) => {
  // console.log(videoSourceURL);
   return (
     <div className="relative aspect-video">
-      {mediaStream && !doneRecording && (
+      {mediaStream && !doneRecording && videoRef && (
         <>
           {!isRecording ? (
             <p className="mb-4 text-center text-zinc-600 dark:text-zinc-300">
