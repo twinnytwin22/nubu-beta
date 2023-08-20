@@ -104,6 +104,7 @@ const VideoRecorder = ({toRecording}) => {
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const initializeMedia = async () => {
+    if (toRecording) {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
         video: {
@@ -119,12 +120,11 @@ const VideoRecorder = ({toRecording}) => {
       }
     } catch (error) {
       console.error("Error initializing media:", error);
-    }
+    }}
   };
   useEffect(() => {
-    if(toRecording){
-    initializeMedia()};
-  }, [resetRecording,toRecording]);
+    initializeMedia();
+  }, []);
  
 
   useEffect(() => {
