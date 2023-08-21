@@ -1,5 +1,6 @@
 import { PortalPageTitle } from '@/lib/hooks/PortalPageTitle'
 import CreateEntityForm from '@/ui/Forms/CreateEntityForm'
+import CreateEntityForm2 from '@/ui/Forms/CreateEntityForm/new-index'
 import React from 'react'
 
 function page() {
@@ -10,7 +11,7 @@ function page() {
                        
                     </div>
             <div className='relative flex min-h-full mx-auto w-full p-8'>
-                <CreateEntityForm />
+                <CreateEntityForm2 />
             </div>
         </section>
     )

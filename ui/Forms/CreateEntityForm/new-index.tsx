@@ -7,37 +7,69 @@ import { useMediaStore } from "@/ui/Misc/VideoRecorder/store";
 import { FaCamera, FaUpload } from "react-icons/fa";
 import { toast } from "react-toastify";
 
-const CreateEntityForm = () => {
+const CreateEntityForm2 = () => {
   const {
     step,
     setStep,
-    entityName,
-    setEntityName,
-    addressLine1,
-    setAddressLine1,
-    addressLine2,
-    setAddressLine2,
-    city,
-    setCity,
-    state,
-    setState,
-    postalCode,
-    setPostalCode,
-    description,
-    setDescription,
     videoUrl,
     toRecording, 
     setToRecording,
-    toUploaded, setToUploaded
+    toUploaded, 
+    setToUploaded,
+    setVideoPreview,
+    videoPreview
   } = useEntityFormStore(); //zustand store
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm({
+    mode: "onChange",
+    defaultValues: {
+        entityName: '' || undefined,
+        addressLine1: '' || undefined,
+        addressLine2: '' || undefined,
+        city: '' || undefined,
+        state: '' || undefined,
+        postalCode: '' || undefined,
+        description: '' || undefined,
+        video_url: '' || videoUrl
+    }
+  });
   const { uploaded } = useMediaStore();
   const handleFormSubmit = (event: any) => {
     event.preventDefault();
     // Handle form submission logic here
   };
 
+  const onSubmitStep1 = (formData: any) => {
+    setStep(2);
+  };
+
   const handleChangeStep = (step: number) => setStep(step);
 
+  const handleVideoUpload = (event: any) => {
+    const file = event.target.files[0];
+    if (file) {
+      // Read the selected file and create a preview URL
+      const reader = new FileReader();
+      reader.onload = (event: any) => {
+        setVideoPreview(event.target.result);
+      };
+      reader.readAsDataURL(file);
+
+      // Update the "audio" field value in the form data
+      setValue("video_url", file);
+    } else {
+      // Clear the preview and the "audio" field value if the file was removed
+      setVideoPreview('');
+      setValue("video_url", '');
+    }
+  };
 
   const handleRecordClick = () => {
     setToRecording(true);
@@ -55,7 +87,7 @@ const CreateEntityForm = () => {
           <h2 className="mb-4 text-xl font-bold text-zinc-900 dark:text-white">
             Tell us about your business.
           </h2>
-          <form onSubmit={handleFormSubmit}>
+          <form onSubmit={handleSubmit(onSubmitStep1)}>
             <div className="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5">
               <div className="sm:col-span-2">
                 <label
@@ -66,13 +98,10 @@ const CreateEntityForm = () => {
                 </label>
                 <input
                   type="text"
-                  name="name"
                   id="name"
                   className="bg-zinc-50 border border-zinc-300 text-zinc-900 text-sm rounded-lg focus:ring-zinc-600 focus:border-zinc-700 block w-full p-2.5 dark:bg-zinc-900 dark:border-zinc-700 dark:placeholder-zinc-400 dark:text-white dark:focus:ring-zinc-500 dark:focus:border-zinc-500"
-                  value={entityName}
-                  onChange={(e) => setEntityName(e.target.value)}
+                  {...register("entityName", { required: true })}
                   placeholder="Type entity name"
-                  required
                 />
               </div>
               <div className="w-full">
@@ -84,11 +113,9 @@ const CreateEntityForm = () => {
                 </label>
                 <input
                   type="text"
-                  name="addressLine1"
                   id="addressLine1"
                   className="bg-zinc-50 border border-zinc-300 text-zinc-900 text-sm rounded-lg focus:ring-zinc-600 focus:border-zinc-700 block w-full p-2.5 dark:bg-zinc-900 dark:border-zinc-700 dark:placeholder-zinc-400 dark:text-white dark:focus:ring-zinc-500 dark:focus:border-zinc-500"
-                  value={addressLine1}
-                  onChange={(e) => setAddressLine1(e.target.value)}
+                  {...register("addressLine1", { required: true })}
                   placeholder="Address line 1"
                   required
                 />
@@ -102,11 +129,9 @@ const CreateEntityForm = () => {
                 </label>
                 <input
                   type="text"
-                  name="addressLine2"
                   id="addressLine2"
                   className="bg-zinc-50 border border-zinc-300 text-zinc-900 text-sm rounded-lg focus:ring-zinc-600 focus:border-zinc-700 block w-full p-2.5 dark:bg-zinc-900 dark:border-zinc-700 dark:placeholder-zinc-400 dark:text-white dark:focus:ring-zinc-500 dark:focus:border-zinc-500"
-                  value={addressLine2}
-                  onChange={(e) => setAddressLine2(e.target.value)}
+                  {...register("addressLine2", { required: false })}
                   placeholder="Address line 2"
                 />
               </div>
@@ -119,11 +144,9 @@ const CreateEntityForm = () => {
                 </label>
                 <input
                   type="text"
-                  name="city"
                   id="city"
                   className="bg-zinc-50 border border-zinc-300 text-zinc-900 text-sm rounded-lg focus:ring-zinc-600 focus:border-zinc-700 block w-full p-2.5 dark:bg-zinc-900 dark:border-zinc-700 dark:placeholder-zinc-400 dark:text-white dark:focus:ring-zinc-500 dark:focus:border-zinc-500"
-                  value={city}
-                  onChange={(e) => setCity(e.target.value)}
+                  {...register("city", { required: true })}
                   placeholder="City"
                   required
                 />
@@ -137,11 +160,9 @@ const CreateEntityForm = () => {
                 </label>
                 <input
                   type="text"
-                  name="state"
                   id="state"
                   className="bg-zinc-50 border border-zinc-300 text-zinc-900 text-sm rounded-lg focus:ring-zinc-600 focus:border-zinc-700 block w-full p-2.5 dark:bg-zinc-900 dark:border-zinc-700 dark:placeholder-zinc-400 dark:text-white dark:focus:ring-zinc-500 dark:focus:border-zinc-500"
-                  value={state}
-                  onChange={(e) => setState(e.target.value)}
+                  {...register("state", { required: true })}
                   placeholder="State"
                   required
                 />
@@ -155,11 +176,9 @@ const CreateEntityForm = () => {
                 </label>
                 <input
                   type="text"
-                  name="postalCode"
                   id="postalCode"
                   className="bg-zinc-50 border border-zinc-300 text-zinc-900 text-sm rounded-lg focus:ring-zinc-600 focus:border-zinc-700 block w-full p-2.5 dark:bg-zinc-900 dark:border-zinc-700 dark:placeholder-zinc-400 dark:text-white dark:focus:ring-zinc-500 dark:focus:border-zinc-500"
-                  value={postalCode}
-                  onChange={(e) => setPostalCode(e.target.value)}
+                  {...register("postalCode", { required: true })}
                   placeholder="Postal code"
                   required
                 />
@@ -172,19 +191,17 @@ const CreateEntityForm = () => {
                   Description
                 </label>
                 <textarea
-                  value={description}
                   id="description"
                   rows={8}
                   className="block p-2.5 w-full text-sm text-zinc-900 bg-zinc-50 rounded-lg border border-zinc-300 focus:ring-zinc-500 focus:border-zinc-500 dark:bg-zinc-900 dark:border-zinc-700 dark:placeholder-zinc-400 dark:text-white dark:focus:ring-zinc-500 dark:focus:border-zinc-500"
-                  onChange={(e) => setDescription(e.target.value)}
+                  {...register("description", { required: true })}
                   placeholder="Write a entity description here..."
                 />
               </div>
             </div>
             <div className="flex items-center space-x-4">
               <button
-                type="button"
-                onClick={() => handleChangeStep(2)}
+                type="submit"
                 className="text-white duration-300 ease-in-out bg-teal-800 hover:bg-zinc-800 focus:ring-4 focus:outline-none focus:ring-zinc-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-zinc-600 dark:hover:bg-zinc-900 dark:focus:ring-zinc-800"
               >
                 Next
@@ -198,115 +215,118 @@ const CreateEntityForm = () => {
 
   const renderStep2 = () => {
     return (
-      <div className="bg-white dark:bg-black  h-fit w-full max-w-3xl mx-auto rounded-md border border-zinc-200 dark:border-zinc-800 shadow-sm">
+      <div className="bg-white dark:bg-black h-fit w-full max-w-3xl mx-auto rounded-md border border-zinc-200 dark:border-zinc-800 shadow-sm">
         <div className="p-8 mx-auto w-full">
           <h2 className="mb-4 text-xl font-bold text-zinc-900 dark:text-white">
             Step 2
           </h2>
-
-          <div className="mb-8 text-black dark:text-white ">
-            <ul className="grid w-full gap-6 md:grid-cols-2">
-              <li onClick={handleUploadClick}>
-                <input
-                  type="radio"
-                  id="hosting-small"
-                  name="hosting"
-                  value="hosting-small"
-                  className="hidden peer"
-                  required
-                />
-                <label
-                  htmlFor="hosting-small"
-                  className="inline-flex items-center justify-between w-full p-5 text-zinc-500 bg-white border border-zinc-200 rounded-lg cursor-pointer dark:hover:text-zinc-300 dark:border-zinc-700 dark:peer-checked:text-teal-600 peer-checked:border-teal-600 peer-checked:text-black hover:text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:bg-zinc-800 dark:hover:bg-zinc-700"
-                >
-                  <div className="block">
-                    <div className="w-full text-lg font-semibold">Upload</div>
-                    <div className="w-full text-sm">
-                      Already have your introduction video?
+          <form>
+            <div className="mb-8 text-black dark:text-white">
+              <ul className="grid w-full gap-6 md:grid-cols-2">
+                <li onClick={handleUploadClick}>
+                  <input
+                    type="radio"
+                    id="hosting-small"
+                    name="hosting"
+                    value="hosting-small"
+                    className="hidden peer"
+                    required
+                  />
+                  <label
+                    htmlFor="hosting-small"
+                    className="inline-flex items-center justify-between w-full p-5 text-zinc-500 bg-white border border-zinc-200 rounded-lg cursor-pointer dark:hover:text-zinc-300 dark:border-zinc-700 dark:peer-checked:text-teal-600 peer-checked:border-teal-600 peer-checked:text-black hover:text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:bg-zinc-800 dark:hover:bg-zinc-700"
+                  >
+                    <div className="block">
+                      <div className="w-full text-lg font-semibold">Upload</div>
+                      <div className="w-full text-sm">
+                        Already have your introduction video?
+                      </div>
                     </div>
-                  </div>
-                 <FaUpload/>
-                </label>
-              </li>
-              <li onClick={handleRecordClick}>
-                <input
-                  type="radio"
-                  id="hosting-big"
-                  name="hosting"
-                  value="hosting-big"
-                  className="hidden peer"
-                />
-                <label
-                  htmlFor="hosting-big"
-                  className="inline-flex items-center justify-between w-full p-5 text-zinc-500 bg-white border border-zinc-200 rounded-lg cursor-pointer dark:hover:text-zinc-300 dark:border-zinc-700 dark:peer-checked:text-teal-600 peer-checked:border-teal-600 peer-checked:text-black hover:text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:bg-zinc-800 dark:hover:bg-zinc-700"
-                >
-                  <div className="block">
-                    <div className="w-full text-lg font-semibold">Record</div>
-                    <div className="w-full text-sm">
-                      Get started with a fresh introduction.
+                    <FaUpload />
+                  </label>
+                </li>
+                <li onClick={handleRecordClick}>
+                  <input
+                    type="radio"
+                    id="hosting-big"
+                    name="hosting"
+                    value="hosting-big"
+                    className="hidden peer"
+                  />
+                  <label
+                    htmlFor="hosting-big"
+                    className="inline-flex items-center justify-between w-full p-5 text-zinc-500 bg-white border border-zinc-200 rounded-lg cursor-pointer dark:hover:text-zinc-300 dark:border-zinc-700 dark:peer-checked:text-teal-600 peer-checked:border-teal-600 peer-checked:text-black hover:text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:bg-zinc-800 dark:hover:bg-zinc-700"
+                  >
+                    <div className="block">
+                      <div className="w-full text-lg font-semibold">Record</div>
+                      <div className="w-full text-sm">
+                        Get started with a fresh introduction.
+                      </div>
                     </div>
-                  </div>
-                <FaCamera/>
-                </label>
-              </li>
-            </ul>
-          </div>
-          {toRecording && <VideoRecorder toRecording={toRecording} />}
-          {toUploaded && (
-            <div className="flex items-center justify-center w-full h-full aspect-video">
-              <label
-                htmlFor="dropzone-file"
-                className="flex flex-col items-center justify-center w-full border-2 border-zinc-300 border-dashed rounded-lg cursor-pointer bg-zinc-50 dark:hover:bg-bray-800 dark:bg-zinc-700 hover:bg-zinc-100 dark:border-zinc-600 dark:hover:border-zinc-500 dark:hover:bg-zinc-600 aspect-video h-full"
-              >
-                <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                 <FaUpload className="text-zinc-500 dark:text-zinc-400 mb-2"/>
-                  <p className="mb-2 text-sm text-zinc-500 dark:text-zinc-400">
-                    <span className="font-semibold">Click to upload</span> or
-                    drag and drop
-                  </p>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400 ">
-                    MP4, MOV (MAX. 100MB)
-                  </p>
-                </div>
-                <input
-                  className="hidden"
-                  type="file"
-                  accept="video/*"
-                  onChange={(e) => {
-                    // Handle video upload logic here
-                    // Once the video is uploaded, set setToUploaded(true)
-                  }}
-                />
-              </label>
+                    <FaCamera />
+                  </label>
+                </li>
+              </ul>
             </div>
-          )}
-        </div>
-        <form>
-          <div className="flex items-center space-x-4">
+            {toRecording && <VideoRecorder toRecording={toRecording} />}
+            {toUploaded && (
+              <div className="flex items-center justify-center w-full h-full aspect-video">
+                {!videoPreview ? (
+                <label
+                  htmlFor="file"
+                  className="flex flex-col items-center justify-center w-full border-2 border-zinc-300 border-dashed rounded-lg cursor-pointer bg-zinc-50 dark:hover:bg-bray-800 dark:bg-zinc-700 hover:bg-zinc-100 dark:border-zinc-600 dark:hover:border-zinc-500 dark:hover:bg-zinc-600 aspect-video h-full"
+                >
+                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                    <FaUpload className="text-zinc-500 dark:text-zinc-400 mb-2" />
+                    <p className="mb-2 text-sm text-zinc-500 dark:text-zinc-400">
+                      <span className="font-semibold">Click to upload</span> or
+                      drag and drop
+                    </p>
+                    <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                      MP4, MOV (MAX. 100MB)
+                    </p>
+                  </div>
+                  <input
+                    className="hidden"
+                    type="file"
+                    id="file"
+                    accept="video/*"
+                    {...register("video_url")}
+                    onChange={handleVideoUpload}
+                    // Handle video upload logic here
+                      // Once the video is uploaded, set setToUploaded(true)
+                  />
+                </label> ) : (
+                    <video
+                    className="aspect-video"
+                    src={videoPreview}/>
+                )}
+              </div>
+            )}
+          </form>
+          <div className="flex items-center space-x-4 mt-4">
+            <button
+              type="button"
+              onClick={() => handleChangeStep(1)}
+              className="text-white duration-300 ease-in-out bg-teal-800 hover:bg-zinc-800 focus:ring-4 focus:outline-none focus:ring-zinc-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-zinc-600 dark:hover:bg-zinc-900 dark:focus:ring-zinc-800"
+            >
+              Back
+            </button>
             {uploaded && (
-              <>
-                <button
-                  type="button"
-                  onClick={() => handleChangeStep(1)}
-                  className="text-white duration-300 ease-in-out bg-teal-800 hover:bg-zinc-800 focus:ring-4 focus:outline-none focus:ring-zinc-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-zinc-600 dark:hover:bg-zinc-900 dark:focus:ring-zinc-800"
-                >
-                  Back
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleChangeStep(3)}
-                  className="text-white duration-300 ease-in-out bg-teal-800 hover:bg-zinc-800 focus:ring-4 focus:outline-none focus:ring-zinc-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-zinc-600 dark:hover:bg-zinc-900 dark:focus:ring-zinc-800"
-                >
-                  Next
-                </button>
-              </>
+              <button
+                type="button"
+                onClick={() => handleChangeStep(3)}
+                className="text-white duration-300 ease-in-out bg-teal-800 hover:bg-zinc-800 focus:ring-4 focus:outline-none focus:ring-zinc-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-zinc-600 dark:hover:bg-zinc-900 dark:focus:ring-zinc-800"
+              >
+                Next
+              </button>
             )}
           </div>
-        </form>
+        </div>
       </div>
     );
   };
-
+  
   return (
     <React.Fragment>
       {step === 1 && renderStep1()}
@@ -315,4 +335,4 @@ const CreateEntityForm = () => {
   );
 };
 
-export default CreateEntityForm;
+export default CreateEntityForm2;

@@ -7,6 +7,9 @@ import { useStorageUpload } from "@thirdweb-dev/react";
 import useEntityFormStore from "@/ui/Forms/CreateEntityForm/store";
 import { useIpfsImage } from "@/lib/site/constants";
 import TimeLapsed from "./TimeLapsed";
+import { Worker, isMainThread, parentPort } from 'worker_threads';
+
+
 const VideoRecorder = ({toRecording}) => {
   const {
     mediaStream,

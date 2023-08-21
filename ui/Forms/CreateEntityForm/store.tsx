@@ -7,13 +7,14 @@ interface EntityFormState {
   addressLine2: string;
   city: string;
   state: string;
+  videoPreview: string;
   postalCode: string;
   description: string;
   step: number;
   videoUrl: string;
   toRecording: boolean;
   toUploaded: boolean;
-
+setVideoPreview:(videoPreview: string) => void;
   setEntityName: (name: string) => void;
   setAddressLine1: (address: string) => void;
   setAddressLine2: (address: string) => void;
@@ -42,7 +43,8 @@ const useEntityFormStore = create<EntityFormState>((set, get) => ({
   videoUrl: "",
   toRecording: false,
   toUploaded: false,
-
+  videoPreview: '',
+setVideoPreview:(videoPreview)=>set({videoPreview:videoPreview}),
   setEntityName: (name) => set({ entityName: name }),
   setAddressLine1: (address) => set({ addressLine1: address }),
   setAddressLine2: (address) => set({ addressLine2: address }),
