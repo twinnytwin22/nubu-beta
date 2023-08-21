@@ -68,6 +68,7 @@ const VideoRecorder = ({toRecording}) => {
         const finalUrl = useIpfsImage(videoUri[0]);
         useEntityFormStore.setState({ videoUrl: finalUrl });
         logVideo();
+        setUploaded(true)
        // console.log(finalUrl + ".mp4");
       }
     } catch (error) {
@@ -218,14 +219,14 @@ const VideoRecorder = ({toRecording}) => {
       {!doneRecording && (
         <div className="absolute bottom-5 right-5 z-50">
           {mediaStream && !isRecording ? (
-            <button role="button" onClick={startRecording}>
+            <button className="relative" type="button" onClick={startRecording}>
               {/* Change the color of the recording icon to green */}
               <BsRecordCircleFill
                 className={`text-3xl ${isRecording ? "text-green-500" : ""}`}
               />
             </button>
           ) : (
-            <button role="button" onClick={stopRecording}>
+            <button type="button" onClick={stopRecording}>
               {/* Change the color of the stop icon to red */}
               <BsFillStopCircleFill
                 className={`text-3xl ${isRecording ? "text-red-500" : ""}`}
@@ -245,8 +246,11 @@ const VideoRecorder = ({toRecording}) => {
           >
             <source src={videoSourceURL} type="video/mp4" />
           </video>
+          <div className=" flex space-x-2">
           {!resetRecording && (
             <button
+            type="button"
+            role="button"
               className="absolute flex space-x-2 items-center top-0 right-5 z-50 text-white bg-red-600 px-3 py-1 rounded-lg"
               onClick={() => {
                 setResetRecording(false);
@@ -266,6 +270,8 @@ const VideoRecorder = ({toRecording}) => {
               Upload
             </button>
           )}
+          
+          </div>
         </div>
       )}
     </div>

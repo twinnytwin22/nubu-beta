@@ -24,6 +24,7 @@ const nextConfig = {
   experimental: {
     appDir: true,
     serverActions: true,
+    nextScriptWorkers: true,
   },
   images: {
     remotePatterns: [
