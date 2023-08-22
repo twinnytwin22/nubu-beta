@@ -53,6 +53,14 @@ export async function middleware(req: NextRequest, event: NextFetchEvent) {
     return NextResponse.redirect(new URL("/login", req.url));
   }
 
+  if (pathname.startsWith('/api/v1/video')) {
+    // Set the Content-Type header to "video/mp4"
+    return new NextResponse('', {
+      headers: {
+        'Content-Type': 'video/mp4',
+      },
+    });
+  }
   // if (session) {
   //   return user;
   // } else {

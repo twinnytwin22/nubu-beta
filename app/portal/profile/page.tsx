@@ -2,7 +2,7 @@ import { PortalPageTitle } from '@/lib/hooks/PortalPageTitle';
 import { supaServerSession } from '@/lib/providers/supabase/supabaseClient';
 import { headers, cookies } from 'next/headers';
 import Link from 'next/link';
-import React from 'react';
+import React, { Suspense } from 'react';
 import { FaPlus } from 'react-icons/fa';
 
 export const dynamic = 'force-dynamic'
@@ -38,6 +38,8 @@ async function ProfilePage() {
                         </Link>
                     </div>
                     <div className='relative flex top-1/3 h-fit mx-auto w-full'>
+                    <Suspense>
+
                         {userOrgs.length > 0 ? (
                             <div className='text-black dark:text-white min-h-full w-full justify-center mx-auto '>
                                 <p className='text-center'>You dont have any business profiles.</p>
@@ -52,6 +54,7 @@ async function ProfilePage() {
                                 </Link>
                             </div>
                         )}
+                         </Suspense>
                     </div>
                 </section>
             );

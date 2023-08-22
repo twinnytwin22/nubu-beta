@@ -6,9 +6,10 @@ import VideoRecorder from "@/ui/Misc/VideoRecorder";
 import { useMediaStore } from "@/ui/Misc/VideoRecorder/store";
 import { FaCamera, FaUpload } from "react-icons/fa";
 import { toast } from "react-toastify";
-import { useStorageUpload } from "@thirdweb-dev/react";
+import { MediaRenderer, useStorageUpload } from "@thirdweb-dev/react";
 import { useIpfsImage } from "@/lib/site/constants";
-
+import TestVideoUpload from "@/ui/Misc/VideoRecorder/TestVideoUploader";
+ 
 const CreateEntityForm2 = () => {
   const {
     step,
@@ -78,7 +79,7 @@ const CreateEntityForm2 = () => {
         useEntityFormStore.setState({ videoUrl: finalUrl });
         logVideo();
         setUploaded(true)
-       // console.log(finalUrl + ".mp4");
+       console.log(videoUri, "URI", videoUrl, "URL");
       }
     } catch (error) {
       // Handle upload errors
@@ -99,7 +100,6 @@ const CreateEntityForm2 = () => {
       // Update the "audio" field value in the form data
       setValue("video_url", file);
       setVideoUrl(file)
-      setUploaded(true)
     } else {
       // Clear the preview and the "audio" field value if the file was removed
       setVideoPreview("");
@@ -249,6 +249,8 @@ const CreateEntityForm2 = () => {
   const renderStep2 = () => {
     return (
       <React.Fragment>
+        <TestVideoUpload/>
+
         <form onSubmit={handleSubmit(onSubmitStep2)}>
           <div className="mb-8 text-black dark:text-white">
             <ul className="grid w-full gap-6 md:grid-cols-2">
@@ -300,7 +302,9 @@ const CreateEntityForm2 = () => {
           {toRecording && <VideoRecorder toRecording={toRecording} />}
           {toUploaded && (
             <div className="flex items-center justify-center w-full h-full aspect-video">
-              {!videoPreview ? (
+
+<div className="hidden">
+              {!videoPreview  ? (
                 <label
                   htmlFor="file"
                   className="flex flex-col items-center justify-center w-full border-2 border-zinc-300 border-dashed rounded-lg cursor-pointer bg-zinc-50 dark:hover:bg-bray-800 dark:bg-zinc-700 hover:bg-zinc-100 dark:border-zinc-600 dark:hover:border-zinc-500 dark:hover:bg-zinc-600 aspect-video h-full"
@@ -329,6 +333,7 @@ const CreateEntityForm2 = () => {
               ) : (
                 <video controls className="aspect-video" src={videoPreview} />
               )}
+              '</div>
             </div>
           )}
         </form>
@@ -366,7 +371,7 @@ const CreateEntityForm2 = () => {
   const renderStep3 = () => {
     return (
     <div className="text-black dark:text-white">
-      <video controls className="aspect-video">
+      <video controls className="hidden aspect-video">
         <source src={videoUrl} type="video/*"/>
         </video>
       <h1>{watch("entityName")}</h1>
@@ -390,6 +395,12 @@ const CreateEntityForm2 = () => {
  
     </div>);
   };
+
+  const renderStep4 = () => {
+    return (
+      <MediaRenderer mimeType="video/*" src="ipfs://QmcTmjZN6sV2vJyZ4B2QG8GFWW5sugBDKg5aEqoyZAxdK8"/>
+    )
+  }
   return (
     <div className="bg-white dark:bg-black h-fit w-full max-w-3xl mx-auto rounded-md border border-zinc-200 dark:border-zinc-800 shadow-sm">
       <div className="p-8 mx-auto w-full">
@@ -398,9 +409,11 @@ const CreateEntityForm2 = () => {
           {step === 2 && "Step 2"}
           {step === 3 && "Step 3"}
         </h2>
-        {step === 1 && renderStep1()}
-        {step === 2 && renderStep2()}
+        {step === 4 && renderStep1()}
+        {step === 1 && renderStep2()}
         {step === 3 && renderStep3()}
+        {step === 2 && renderStep4()}
+
       </div>
     </div>
   );

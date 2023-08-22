@@ -1,6 +1,6 @@
 'use client'
 import DashboardSidebar from '@/ui/Navigation/DashboardSidebar';
-import React, { useState } from 'react';
+import React, { Suspense, useState } from 'react';
 
 function PortalLayout({ children }: { children: React.ReactNode }) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -21,7 +21,9 @@ function PortalLayout({ children }: { children: React.ReactNode }) {
                 </button>
                 <div className='md:ml-64  mx-auto max-h-screen h-full  transition-transform'>
                     <div className='relative w-full h-full top-24 left-0 right-0  '>
+                        <Suspense>
                         {children}
+                        </Suspense>
                     </div>
                 </div>
             </div >

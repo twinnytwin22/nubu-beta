@@ -1,14 +1,43 @@
-import FFmpeg from "ffmpeg.js/ffmpeg-mp4";
-export const convertToMp4 = async (recordedChunks: any) => {
-    const blob = new Blob(recordedChunks, { type: "video/webm" });
-    const buffer = await blob.arrayBuffer();
-  
-    const result = FFmpeg({
-      MEMFS: [{ name: "input.webm", data: new Uint8Array(buffer) }],
-      arguments: ["-i", "input.webm", "output.mp4"],
+import { path } from '@ffmpeg-installer/ffmpeg'
+import ffmpeg from 'fluent-ffmpeg';
+import { BlobServiceClient } from '@azure/storage-blob';
+
+const connectionString = process.env.AZURE_CONNECTION_STRING!;
+const containerName = 'videos';
+
+const blobServiceClient = BlobServiceClient.fromConnectionString(connectionString);
+const containerClient = blobServiceClient.getContainerClient(containerName);
+
+ffmpeg.setFfmpegPath(path);
+
+export const transcoder = async (file: any) => {
+  return new Promise<string>((resolve, reject) => {
+    const inputFilePath = file.path;
+    const outputFileName = `${file.originalname}.mp4`;
+    const blockBlobClient = containerClient.getBlockBlobClient(outputFileName);
+
+    const stream = ffmpeg(inputFilePath)
+      .outputFormat('mp4')
+      .videoCodec('libx264')
+      .audioCodec('aac')
+      .size('640x360')
+      .on('end', async () => {
+        console.log('Transcoding finished');
+        const blobUrl = blockBlobClient.url;
+        resolve(blobUrl);
+      })
+      .on('error', (err) => {
+        console.error('Error during transcoding:', err);
+        reject(err);
+      })
+      .pipe();
+
+    stream.on('data', (chunk) => {
+      blockBlobClient.stageBlock(outputFileName, chunk, chunk.length);
     });
-  
-    const outputData = result.MEMFS[0].data;
-    return new Blob([outputData], { type: "video/mp4" });
-  };
-  
+
+    stream.on('end', async () => {
+      await blockBlobClient.commitBlockList([outputFileName]);
+    });
+  });
+};
