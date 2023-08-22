@@ -2,11 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import busboy from "busboy";
 import fs from "fs";
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
+
 
 async function uploadVideoStream(req: NextApiRequest, res: NextApiResponse) {
   const bb = busboy({ headers: req.headers });
