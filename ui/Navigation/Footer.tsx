@@ -8,7 +8,7 @@ import { useContactButtonStore } from '@/lib/stores/contactButtonStore';
 import { useAuthProvider } from '@/app/context/auth';
 import { imageBuilder } from '@/lib/providers/sanity/sanity';
 export const Footer = ({ settings }) => {
-    console.log(settings)
+   // console.log(settings)
     const image = imageBuilder(settings?.logo)
     const darkImage = imageBuilder(settings?.altLogo)
     const pathname = usePathname()

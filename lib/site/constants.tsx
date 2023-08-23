@@ -16,7 +16,7 @@ export function useBgImagePath(url: string) {
 }
 
 export function useIpfsImage(url: string) {
-    const imagePath = url?.replace("ipfs://", "https://gateway.ipfscdn.io/ipfs/")
+    const imagePath = url?.replace("ipfs://", "https://cloudflare-ipfs.com/ipfs/")
     return imagePath
 }
 export const defaultUserImage = "/images/icons/default_user_image.jpg";
