@@ -1,5 +1,4 @@
 'use client'
-
 import { FFmpeg } from '@ffmpeg/ffmpeg'
 import { fetchFile, toBlobURL } from '@ffmpeg/util'
 import { useRef, useState } from 'react'
@@ -7,9 +6,13 @@ import { useRef, useState } from 'react'
 export default function VideoConverter() {
   const [loaded, setLoaded] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [transcoding,setTranscoding] = useState(false)
+  const [transcoded,setTranscoded] = useState(false)
+
   const ffmpegRef = useRef(new FFmpeg())
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const messageRef = useRef<HTMLParagraphElement | null>(null)
+  const fileInputRef = useRef<HTMLInputElement | null>(null)
 
   const load = async () => {
     setIsLoading(true)
@@ -18,8 +21,6 @@ export default function VideoConverter() {
     ffmpeg.on('log', ({ message }) => {
       if (messageRef.current) messageRef.current.innerHTML = message
     })
-    // toBlobURL is used to bypass CORS issue, urls with the same
-    // domain can be used directly.
     await ffmpeg.load({
       coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
       wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm')
@@ -29,48 +30,78 @@ export default function VideoConverter() {
   }
 
   const transcode = async () => {
+    if (!fileInputRef.current?.files?.length) {
+      alert('Please select a video file.')
+      return
+    }
+
     const ffmpeg = ffmpegRef.current
-    // u can use 'https://ffmpegwasm.netlify.app/video/video-15s.avi' to download the video to public folder for testing
-    await ffmpeg.writeFile('input.mp4', await fetchFile('/videos/signinvideo1.mp4'))
-    await ffmpeg.exec(['-i', 'input.mp4', 'output.mp4'])
-    const data = (await ffmpeg.readFile('output.mp4')) as any
+    const inputFile = fileInputRef.current.files[0]
+    const inputFileName = inputFile.name
+    const inputExtension = inputFileName.split('.').pop()?.toLowerCase()
+
+    if (inputExtension !== 'mp4' && inputExtension !== 'mov') {
+      alert('Please select an MP4 or MOV video file.')
+      return
+    }
+
+    const outputFileName = 'output.mp4'
+
+    await ffmpeg.writeFile(inputFileName, await fetchFile(inputFile))
+    await ffmpeg.exec(['-i', inputFileName, outputFileName])
+    const data = (await ffmpeg.readFile(outputFileName)) as any
     if (videoRef.current)
       videoRef.current.src = URL.createObjectURL(new Blob([data.buffer], { type: 'video/mp4' }))
   }
 
-  return loaded ? (
-    <div className="">
-      <video ref={videoRef} controls></video>
+  return (
+    <div className="min-w-[315px] w-full">
+        {loaded ? (
+                  <div className='w-full'>
+
+      <div className='max-w-lg w-full aspect-video'>
+        <video className='object-cover aspect-video w-full' ref={videoRef} controls/>
+      </div>
       <br />
-      <button
-        onClick={transcode}
-        className="bg-green-500 hover:bg-green-700 text-white py-3 px-6 rounded"
-      >
-        Transcode avi to mp4
-      </button>
-      <p ref={messageRef}></p>
-    </div>
-  ) : (
-    <button
-      className="fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] flex items-center bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded"
-      onClick={load}
-    >
-      Load ffmpeg-core
-      {isLoading && (
-        <span className="animate-spin ml-3">
-          <svg
-            viewBox="0 0 1024 1024"
-            focusable="false"
-            data-icon="loading"
-            width="1em"
-            height="1em"
-            fill="currentColor"
-            aria-hidden="true"
+    
+          <input className='block w-full text-sm text-zinc-900 border border-zinc-300 rounded-lg cursor-pointer bg-zinc-50 dark:text-zinc-400 focus:outline-none dark:bg-zinc-700 dark:border-zinc-600 dark:placeholder-zinc-400' type="file" accept=".mp4,.mov" ref={fileInputRef} />
+          <br />
+          <button
+            type='button'
+            onClick={transcode}
+            className="top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] flex items-center bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded"
           >
-            <path d="M988 548c-19.9 0-36-16.1-36-36 0-59.4-11.6-117-34.6-171.3a440.45 440.45 0 00-94.3-139.9 437.71 437.71 0 00-139.9-94.3C629 83.6 571.4 72 512 72c-19.9 0-36-16.1-36-36s16.1-36 36-36c69.1 0 136.2 13.5 199.3 40.3C772.3 66 827 103 874 150c47 47 83.9 101.8 109.7 162.7 26.7 63.1 40.2 130.2 40.2 199.3.1 19.9-16 36-35.9 36z"></path>
-          </svg>
-        </span>
+            Transcode video
+          </button>
+          <p className='text-xs w-full min-w-[315px]' ref={messageRef}></p>
+        </div>
+      ) : (
+        <button
+          className="top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] flex items-center bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded"
+          onClick={load}
+        >
+          Load ffmpeg-core
+          {isLoading && (
+            <span className="animate-spin ml-3">
+              <svg
+                viewBox="0 0 1024 1024"
+                focusable="false"
+                data-icon="loading"
+                width="1em"
+                height="1em"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path d="M988 548c-19.9 0-36-16.1-36-36 0-59.4-11.6-117-34.6-171.3a440.45 440.45 0 00-94.3-139.9 437.71 437.71 0 00-139.9-94.3C629 83.6 571.4 72 512 72c-19.9 0-36-16.1-36-36s16.1-36 36-36c69.1 0 136.2 13.5 199.3 40.3C772.3 66 827 103 874 150c47 47 83.9 101.8 109.7 162.7 26.7 63.1 40.2 130.2 40.2 199.3.1 19.9-16 36-35.9 36z"></path>
+              </svg>
+            </span>
+          )}
+        </button>
       )}
-    </button>
+    </div>
   )
+}
+
+const useVideoFile = (file: File) => {
+
 }

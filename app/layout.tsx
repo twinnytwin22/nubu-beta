@@ -1,12 +1,11 @@
-
-import NavBar from '@/ui/Navigation/NavBar'
 import './globals.css'
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
+import NavBar from '@/ui/Navigation/NavBar'
 import Providers from '@/lib/providers'
 import { Footer } from '@/ui/Navigation/Footer'
 import { getSiteSettings } from '@/lib/providers/sanity/sanity'
 import Script from 'next/script'
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { Suspense } from 'react'
 export const metadata = {
   title: 'CRIB',

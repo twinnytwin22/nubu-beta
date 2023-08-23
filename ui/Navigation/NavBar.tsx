@@ -9,6 +9,7 @@ import { imageBuilder } from '@/lib/providers/sanity/sanity';
 //import { imageLoader } from '@/lib/providers/sanity/imageLoader';
 import { usePathname } from 'next/navigation';
 import SignInModal from '../Buttons/SignIn';
+import { useAuthProvider } from '@/app/context/auth';
 const useMobileMenuStore = create((set: any) => ({
     isMobileMenuOpen: false,
     toggleMobileMenu: () => set((state: { isMobileMenuOpen: any; }) => ({ isMobileMenuOpen: !state.isMobileMenuOpen })),
@@ -18,7 +19,7 @@ const useMobileMenuStore = create((set: any) => ({
 function NavBar({ settings }: { settings: any }) {
     const image = imageBuilder(settings?.logo)
     const darkImage = imageBuilder(settings?.altLogo)
-
+    const {isLoading} = useAuthProvider()
     const { isMobileMenuOpen, toggleMobileMenu } = useStore(useMobileMenuStore);
     const pathname = usePathname()
     const isHidden = pathname.startsWith('/') //|| pathname.startsWith('/login')
@@ -42,6 +43,7 @@ function NavBar({ settings }: { settings: any }) {
                                 height={100}
                             />
                 </Link>
+                {!isLoading ? 
                 <div className="flex md:order-2 gap-4 items-center">
                     <DarkModeSwitch/>
                     <SignInModal />                   
@@ -68,7 +70,7 @@ function NavBar({ settings }: { settings: any }) {
                             ></path>
                         </svg>
                     </button>
-                </div>
+                </div>: ''}
                 <div
                     className={`items-center justify-between w-full md:flex md:w-auto md:order-1 ${isMobileMenuOpen ? '' : 'hidden'
                         }`}

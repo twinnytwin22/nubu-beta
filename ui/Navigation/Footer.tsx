@@ -29,6 +29,7 @@ export const Footer = ({ settings }) => {
                     <div>
                         <Link href="/" className="flex items-center ">
                             <Image
+                            priority
                                 src={image!}
                                 className="h-10 mr-3 w-auto dark:hidden block"
                                 alt="Crib Logo"
@@ -36,6 +37,7 @@ export const Footer = ({ settings }) => {
                                 height={100}
                             />
                               <Image
+                              priority
                                 src={darkImage!}
                                 className="h-10 mr-3 w-auto hidden dark:block "
                                 alt="Crib Logo"

@@ -4,9 +4,13 @@ import Link from "next/link";
 import React, { useState } from "react";
 
 export const SignInModal = () => {
-  const { user } = useAuthProvider()
+  const { user, isLoading } = useAuthProvider()
 
   function SignInButton() {
+
+    if (isLoading) {
+      return null
+    }
     return (
       <div className='w-full flex items-center'>
         <Link href={'/login'}

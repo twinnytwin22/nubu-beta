@@ -12,7 +12,7 @@ function HomeHeader({ content }) {
   const setOpen = useContactButtonStore((state: any) => state.setOpen);
   const image = imageBuilder(content.image)
   const [scrollY, setScrollY] = useState(0);
-  const { user } = useAuthProvider()
+  const { user, isLoading } = useAuthProvider()
   //console.log(image)
   useEffect(() => {
     const handleScroll = () => {
@@ -30,7 +30,7 @@ function HomeHeader({ content }) {
     setOpen(true);
   };
 
-  return (
+  return  (
     <section className="relative mt-16 w-full  min-h-[700px] h-full  overflow-hidden border-b border-zinc-300 dark:border-zinc-800 items-center">
       {/* Next/Image component for the background image */}
       <Image
@@ -45,7 +45,7 @@ function HomeHeader({ content }) {
 
       {/* Black overlay */}
       <div className="absolute inset-0 bg-black opacity-50 "></div>
-
+     { !isLoading && 
       <div className="relative py-24 px-4 mx-auto max-w-screen-xl text-center lg:py-32 lg:px-12 overflow-x-hidden">
         {!user &&
           <Link href="/login" className="flex max-w-sm mx-auto justify-between items-center py-1 px-1 pr-4 mb-7 text-sm text-zinc-700 bg-zinc-100 rounded-full dark:bg-zinc-800 dark:text-white hover:bg-zinc-200 dark:hover:bg-zinc-700" role="alert">
@@ -69,7 +69,7 @@ function HomeHeader({ content }) {
         <div className="px-4 pt-8 mx-auto text-center md:max-w-screen-md lg:max-w-screen-lg lg:px-36">
 
         </div>
-      </div>
+      </div>}
     </section>
   );
 }
