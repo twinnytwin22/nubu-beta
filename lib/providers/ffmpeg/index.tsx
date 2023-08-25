@@ -32,7 +32,7 @@ export default function VideoConverter() {
     const baseURL = "https://unpkg.com/@ffmpeg/core@0.12.2/dist/umd";
     const ffmpeg = ffmpegRef.current;
     ffmpeg.on("log", ({ message }) => {
-      if (messageRef.current) messageRef.current.innerHTML = message;
+      if (messageRef.current && messageRef.current.innerHTML !== 'Aborted()') messageRef.current.innerHTML = message;
     });
     await ffmpeg.load({
       coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, "text/javascript"),
@@ -56,7 +56,7 @@ export default function VideoConverter() {
     const inputFile = fileInputRef.current.files[0];
     const inputFileName = inputFile.name;
     const inputExtension = inputFileName.split(".").pop()?.toLowerCase();
-    const extensionOptions = ["mp4", "mov", "webm"];
+    const extensionOptions = ["mp4", "mov", "webm",'m4v'];
     if (!extensionOptions?.includes(inputExtension!)) {
       alert("Please select an MP4, WEBM or MOV video file.");
       return;
@@ -119,7 +119,7 @@ export default function VideoConverter() {
               <input
                 className="block w-full max-w-sm text-sm text-zinc-900 border border-zinc-300 rounded-lg cursor-pointer bg-zinc-50 dark:text-zinc-400 focus:outline-none dark:bg-zinc-700 dark:border-zinc-600 dark:placeholder-zinc-400"
                 type="file"
-                accept=".mp4,.mov"
+                accept=".mp4,.mov,.m4v"
                 ref={fileInputRef}
               />
               <br />
@@ -192,10 +192,11 @@ export default function VideoConverter() {
           </Link>
         </div>
       )}
+      {!uploaded &&
       <p
-        className="text-[10px] w-full min-w-[315px] absolute whitespace-break-spaces left-0"
+        className="text-xs w-full min-w-[315px] absolute whitespace-break-spaces left-0"
         ref={messageRef}
-      ></p>
+      ></p>}
     </div>
   );
 }
