@@ -1,5 +1,5 @@
 "use client";
-import { useIpfsImage } from "@/lib/site/constants";
+import {  useIpfsUrl } from "@/lib/site/constants";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { fetchFile, toBlobURL } from "@ffmpeg/util";
 import { useStorageUpload } from "@thirdweb-dev/react";
@@ -46,7 +46,7 @@ export default function VideoConverter() {
         const videoUri = await uploadToIpfs({
           data: [videoFile],
         });
-        const finalUrl = useIpfsImage(videoUri[0]);
+        const finalUrl = useIpfsUrl(videoUri[0]);
         if (finalUrl) {
           setUrls({
             ipfs: videoUri[0],
