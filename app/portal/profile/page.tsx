@@ -30,7 +30,7 @@ async function ProfilePage() {
             return session.session && userOrgs && (
                 <section className='w-full h-full mx-auto relative'>
                     <div className='flex px-4 justify-between items-center h-fit w-full mb-3'>
-                        <PortalPageTitle title='Business Profile' toolTip='Get ya mind right' orgs={userOrgs} />
+                        <PortalPageTitle title='Business Profile' toolTip='Get ya mind right'/>
                         <Link href='/portal/entity/create'>
                             <button className="dark:text-black w-36 flex items-center space-x-2 text-white bg-teal-900 relative  hover:bg-zinc-800 focus:ring-4 focus:outline-none focus:ring-zinc-300 font-medium rounded-lg text-sm px-4 py-2 text-center md:mr-0 dark:bg-white dark:hover:bg-zinc-200 dark:focus:ring-zinc-800 ease-in-out duration-300">
                                 <p>Create Entity</p>

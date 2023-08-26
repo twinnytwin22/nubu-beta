@@ -1,7 +1,7 @@
 'use client'
 import { BsFillQuestionSquareFill } from "react-icons/bs";
 import { useState } from 'react'
-export const PortalPageTitle = ({ title, toolTip, subtitle, orgs }: { title: string, subtitle?: string | null, toolTip?: string | null | boolean, orgs: any }) => {
+export const PortalPageTitle = ({ title, toolTip, subtitle, }: { title: string, subtitle?: string | null, toolTip?: string | null | boolean }) => {
     const [showTooltip, setShowTooltip] = useState(false);
     const handleSetTooltip = () => {
         setShowTooltip(true);
@@ -9,8 +9,6 @@ export const PortalPageTitle = ({ title, toolTip, subtitle, orgs }: { title: str
     const handleHideTooltip = () => {
         setShowTooltip(false);
     };
-
-    console.log(orgs)
 
     return (
         <div className=' items-center text-black dark:text-white left-8'>
