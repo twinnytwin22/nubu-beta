@@ -1,5 +1,6 @@
 import { PortalPageTitle } from '@/lib/hooks/PortalPageTitle';
 import { supaServerSession } from '@/lib/providers/supabase/supabaseClient';
+import BusinessProfileCard from '@/ui/Cards/BusinessProfileCard';
 import { headers, cookies } from 'next/headers';
 import Link from 'next/link';
 import React, { Suspense } from 'react';
@@ -15,7 +16,7 @@ async function ProfilePage() {
         try {
             const host = headers().get('host');
             const protocol = process?.env.NODE_ENV === 'development' ? 'http' : 'https';
-            const res = await fetch(`${protocol}://${host}/api/v1/getUsersOrgs?userId=${session.session?.user.id}`, {
+            const res = await fetch(`${protocol}://${host}/api/v1/getUsersOrgs?userId=${session.session?.user?.id}`, {
                 method: 'GET',
                 cache: 'no-store',
             });
@@ -26,10 +27,10 @@ async function ProfilePage() {
 
             const userOrgs = await res.json();
             
-            return (
+            return session.session && userOrgs && (
                 <section className='w-full h-full mx-auto relative'>
                     <div className='flex px-4 justify-between items-center h-fit w-full mb-3'>
-                        <PortalPageTitle title='Business Profile' toolTip='Get ya mind right' />
+                        <PortalPageTitle title='Business Profile' toolTip='Get ya mind right' orgs={userOrgs} />
                         <Link href='/portal/entity/create'>
                             <button className="dark:text-black w-36 flex items-center space-x-2 text-white bg-teal-900 relative  hover:bg-zinc-800 focus:ring-4 focus:outline-none focus:ring-zinc-300 font-medium rounded-lg text-sm px-4 py-2 text-center md:mr-0 dark:bg-white dark:hover:bg-zinc-200 dark:focus:ring-zinc-800 ease-in-out duration-300">
                                 <p>Create Entity</p>
@@ -41,10 +42,9 @@ async function ProfilePage() {
                     <Suspense>
 
                         {userOrgs.length > 0 ? (
-                            <div className='text-black dark:text-white min-h-full w-full justify-center mx-auto '>
-                                <p className='text-center'>You dont have any business profiles.</p>
-                                <button className='mx-auto justify-center'>Create Entity</button>
-                                <p>{JSON.stringify(userOrgs)}</p>
+                            <div className='text-black dark:text-white min-h-full w-full mx-auto space-y-4 '>
+                                {userOrgs.map((profile: any ) => (
+                                <BusinessProfileCard profile={profile}/>))}
                             </div>
                         ) : (
                             <div className='text-black w-full dark:text-white min-h-full justify-center mx-auto'>
@@ -52,6 +52,8 @@ async function ProfilePage() {
                                 <Link href={'/portal/entity/create'} className=''>
                                     <p className='mx-auto justify-center text-center underline text-teal-800 dark:text-teal-600'>Create Entity</p>
                                 </Link>
+                                <p>{JSON.stringify(userOrgs?.orgs)}</p>
+
                             </div>
                         )}
                          </Suspense>

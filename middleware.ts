@@ -13,7 +13,7 @@ export async function middleware(req: NextRequest, event: NextFetchEvent) {
   const {
     data: { session },
   } = await supabase.auth.getSession();
-  //console.log(session);
+  console.log(session);
 
   const cspHeaderValue =
     `default-src 'self'; ` +

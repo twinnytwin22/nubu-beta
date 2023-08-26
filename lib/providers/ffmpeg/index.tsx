@@ -4,21 +4,29 @@ import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { fetchFile, toBlobURL } from "@ffmpeg/util";
 import { useStorageUpload } from "@thirdweb-dev/react";
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { RefObject, useRef, useState } from "react";
+import useVideoConverterStore from "./store";
 
 const ffMpeg = new FFmpeg();
 export default function VideoConverter() {
-  const [loaded, setLoaded] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [transcoding, setTranscoding] = useState(false);
-  const [transcoded, setTranscoded] = useState(false);
-  const [uploaded, setUploaded] = useState(false);
-  const [urls, setUrls] = useState<any>();
-
-  const ffmpegRef = useRef(ffMpeg);
-  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const {
+    loaded,
+    isLoading,
+    transcoding,
+    transcoded,
+    uploaded,
+    urls,
+    setLoaded,
+    setIsLoading,
+    setTranscoding,
+    setTranscoded,
+    setUploaded,
+    setUrls,
+  } = useVideoConverterStore();
+  const ffmpegRef = useRef<any>(ffMpeg);
+  const videoRef = useRef<HTMLVideoElement | null | any>(null);
   const messageRef = useRef<HTMLParagraphElement | null>(null);
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null | any>(null);
 
   const { mutateAsync: uploadToIpfs } = useStorageUpload({
     uploadWithoutDirectory: true,
@@ -27,57 +35,9 @@ export default function VideoConverter() {
       // setTotal(progress?.total); // Update the progress state
     },
   });
-  const load = async () => {
-    setIsLoading(true);
-    const baseURL = "https://unpkg.com/@ffmpeg/core@0.12.2/dist/umd";
-    const ffmpeg = ffmpegRef.current;
-    ffmpeg.on("log", ({ message }) => {
-      if (messageRef.current && messageRef.current.innerHTML !== 'Aborted()') messageRef.current.innerHTML = message;
-    });
-    await ffmpeg.load({
-      coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, "text/javascript"),
-      wasmURL: await toBlobURL(
-        `${baseURL}/ffmpeg-core.wasm`,
-        "application/wasm"
-      ),
-    });
-    setLoaded(true);
-    setIsLoading(false);
-  };
 
-  const transcode = async () => {
-    if (!fileInputRef.current?.files?.length) {
-      alert("Please select a video file.");
-      return;
-    }
-    setIsLoading(true);
 
-    const ffmpeg = ffmpegRef.current;
-    const inputFile = fileInputRef.current.files[0];
-    const inputFileName = inputFile.name;
-    const inputExtension = inputFileName.split(".").pop()?.toLowerCase();
-    const extensionOptions = ["mp4", "mov", "webm",'m4v'];
-    if (!extensionOptions?.includes(inputExtension!)) {
-      alert("Please select an MP4, WEBM or MOV video file.");
-      return;
-    }
-
-    const outputFileName = "output.mp4";
-    console.log(inputFileName);
-    await ffmpeg.writeFile(inputFileName, await fetchFile(inputFile));
-    await ffmpeg.exec(["-i", inputFileName, "-q:v", "0", outputFileName]);
-    const data = (await ffmpeg.readFile(outputFileName)) as any;
-    await upload(data);
-    if (videoRef.current) {
-      videoRef.current.src = URL.createObjectURL(
-        new Blob([data.buffer], { type: "video/mp4" })
-      );
-      setTranscoded(true);
-      setIsLoading(false);
-
-      return data;
-    }
-  };
+  
 
   const upload = async (file: File) => {
     if (file) {
@@ -125,7 +85,7 @@ export default function VideoConverter() {
               <br />
               <button
                 type="button"
-                onClick={transcode}
+                onClick={() => transcode(fileInputRef?.current?.files[0], ffmpegRef?.current)}
                 className="relative flex items-center bg-teal-600 dark:bg-teal-600 hover:bg-teal-800 text-white py-2 px-4 rounded"
               >
                 Upload Video
@@ -202,3 +162,53 @@ export default function VideoConverter() {
 }
 
 const useVideoFile = (file: File) => {};
+
+
+export const transcode = async (inputFile: File, ffmpeg: any) => {
+  if (!inputFile) {
+    alert("Please select a video file.");
+    return;
+  }
+  console.log(inputFile)
+  useVideoConverterStore.setState({ isLoading: true });
+
+  const inputFileName = inputFile.name;
+  const inputExtension = inputFileName.split(".").pop()?.toLowerCase() || "webm"; // Assume WEBM if no extension
+  const extensionOptions = ["mp4", "mov", "webm", "m4v"];
+  if (!extensionOptions.includes(inputExtension)) {
+    alert("Please select an MP4, WEBM, MOV, or M4V video file.");
+    return;
+  }
+
+  const outputFileName = "output.mp4";
+  console.log(inputFileName);
+  await ffmpeg.writeFile(inputFileName, await fetchFile(inputFile));
+  await ffmpeg.exec(["-i", inputFileName, "-q:v", "0", outputFileName]);
+  const data = (await ffmpeg.readFile(outputFileName)) as any;
+
+  useVideoConverterStore.setState({ transcoded: true });
+  useVideoConverterStore.setState({ isLoading: false });
+
+  console.log(data);
+  return data;
+};
+
+
+
+export const load = async (ffmpegRef: any) => {
+  useVideoConverterStore.setState({isLoading: true})
+  const baseURL = "https://unpkg.com/@ffmpeg/core@0.12.2/dist/umd";
+  const ffmpeg = ffmpegRef.current;
+ // ffmpeg.on("log", ({ message }) => {
+ //   if (messageRef.current && messageRef.current.innerHTML !== 'Aborted()') messageRef.current.innerHTML = message;
+//   });
+  await ffmpeg.load({
+    coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, "text/javascript"),
+    wasmURL: await toBlobURL(
+      `${baseURL}/ffmpeg-core.wasm`,
+      "application/wasm"
+    ),
+  });
+  useVideoConverterStore.setState({loaded: true})
+  useVideoConverterStore.setState({isLoading: false})
+};

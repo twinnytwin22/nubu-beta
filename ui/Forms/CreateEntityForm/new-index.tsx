@@ -1,20 +1,25 @@
 "use client";
-import React from "react";
+import React, { FormEvent, useRef } from "react";
 import useEntityFormStore from "./store";
 import { SubmitHandler, useForm } from "react-hook-form";
 import VideoRecorder from "@/ui/Misc/VideoRecorder";
 import { useMediaStore } from "@/ui/Misc/VideoRecorder/store";
 import { FaCamera, FaUpload } from "react-icons/fa";
-import { toast } from "react-toastify";
 import { MediaRenderer, useStorageUpload } from "@thirdweb-dev/react";
-import { useIpfsImage } from "@/lib/site/constants";
-import TestVideoUpload from "@/ui/Misc/VideoRecorder/TestVideoUploader";
- 
+import { useIpfsUrl } from "@/lib/site/constants";
+import { FFmpeg } from "@ffmpeg/ffmpeg";
+import { load, transcode } from "@/lib/providers/ffmpeg";
+import useVideoConverterStore from "@/lib/providers/ffmpeg/store";
+const ffMpeg = new FFmpeg();
+
 const CreateEntityForm2 = () => {
+  const ffmpegRef = useRef(ffMpeg);
+
   const {
     step,
     setStep,
     videoUrl,
+    finalVideoUrl,
     setVideoUrl,
     toRecording,
     setToRecording,
@@ -22,8 +27,8 @@ const CreateEntityForm2 = () => {
     setToUploaded,
     setVideoPreview,
     videoPreview,
-    logVideo
-    
+    logVideo, 
+
   } = useEntityFormStore(); //zustand store
 
   const {
@@ -36,17 +41,29 @@ const CreateEntityForm2 = () => {
   } = useForm({
     mode: "onChange",
     defaultValues: {
-      entityName: "" || undefined,
-      addressLine1: "" || undefined,
-      addressLine2: "" || undefined,
+      title: "" || undefined,
+      address_1: "" || undefined,
+      address_2: "" || undefined,
       city: "" || undefined,
       state: "" || undefined,
-      postalCode: "" || undefined,
+      postal_code: "" || undefined,
       description: "" || undefined,
-      video_url: "" || videoUrl,
+      video_url: useEntityFormStore.getState().finalVideoUrl! || null,
     },
   });
-  const { uploaded, setInProgress, setProgress, setTotal , setUploaded} = useMediaStore();
+  const { 
+    uploaded, 
+    setInProgress, 
+    setProgress, 
+    setTotal, 
+    setUploaded
+   } = useMediaStore();
+  const {
+    transcoding,
+    transcoded,
+    setTranscoding,
+    setTranscoded,
+  } = useVideoConverterStore();
   const { mutateAsync: upload } = useStorageUpload({
     uploadWithoutDirectory: true,
     onProgress: (progress) => {
@@ -54,10 +71,27 @@ const CreateEntityForm2 = () => {
       setTotal(progress?.total); // Update the progress state
     },
   });
-  const handleFormSubmit = (event: any) => {
-    event.preventDefault();
-    // Handle form submission logic here
+  const handleFormSubmit = async (formData: any) => {
+
+    const videoURL = useEntityFormStore.getState().finalVideoUrl
+    console.log(videoURL)
+   // e.preventDefault(); // Prevent the default browser behavior
+    setValue('video_url', videoURL)
+    try {
+      if (formData){
+      const response = await fetch('/api/v1/createEntity', {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      }); // Adjust the endpoint as needed
+      console.log(await response.json()); // Assuming your API sends a message in the response
+      // Handle any additional logic or feedback to the user
+   } } catch (error) {
+      console.error('Form submission error:', error);
+      // Handle error feedback to the user
+    }
   };
+  
 
   const onSubmitStep1 = (formData: any) => {
     setStep(2);
@@ -71,24 +105,29 @@ const CreateEntityForm2 = () => {
     try {
       if (videoUrl) {
         setInProgress("video");
-  
+        const ffmpeg = ffmpegRef.current;
+        const transcodedVideo = await transcode(videoUrl, ffmpeg)
+        const videoFile = new File([transcodedVideo], "video.mp4", { type: "video/mp4" });
         const videoUri = await upload({
-          data: [videoUrl],
+          data: [videoFile],
         });
-        const finalUrl = useIpfsImage(videoUri[0]);
-        useEntityFormStore.setState({ videoUrl: finalUrl });
+        const finalUrl = useIpfsUrl(videoUri[0]);
+        if(finalUrl) {
+        useEntityFormStore.setState({ finalVideoUrl: finalUrl });
+        }
         logVideo();
         setUploaded(true)
-       console.log(videoUri, "URI", videoUrl, "URL");
       }
     } catch (error) {
       // Handle upload errors
       console.error("Upload error:", error);
     }
-  };
+    console.log(useEntityFormStore.getState().finalVideoUrl, "URL");
 
+  };
+ 
   const handleVideoUpload = (event: any) => {
-    const file = event.target.files[0];
+    const file: File = event.target.files[0];
     if (file) {
       // Read the selected file and create a preview URL
       const reader = new FileReader();
@@ -96,26 +135,28 @@ const CreateEntityForm2 = () => {
         setVideoPreview(event.target.result);
       };
       reader.readAsDataURL(file);
-
       // Update the "audio" field value in the form data
-      setValue("video_url", file);
+   ///   setValue("video_url", file as any);
       setVideoUrl(file)
     } else {
       // Clear the preview and the "audio" field value if the file was removed
       setVideoPreview("");
-      setValue("video_url", "");
+      setValue("video_url", null);
     }
   };
 
-  const handleRecordClick = () => {
+  const handleRecordClick = async () => {
     setVideoPreview("");
     setToRecording(true);
     setToUploaded(false);
+    await load(ffmpegRef)
+
   };
 
-  const handleUploadClick = () => {
+  const handleUploadClick = async () => {
     setToRecording(false);
     setToUploaded(true);
+    await load(ffmpegRef)
   };
 
   const renderStep1 = () => {
@@ -134,7 +175,7 @@ const CreateEntityForm2 = () => {
                 type="text"
                 id="name"
                 className="bg-zinc-50 border border-zinc-300 text-zinc-900 text-sm rounded-lg focus:ring-zinc-600 focus:border-zinc-700 block w-full p-2.5 dark:bg-zinc-900 dark:border-zinc-700 dark:placeholder-zinc-400 dark:text-white dark:focus:ring-zinc-500 dark:focus:border-zinc-500"
-                {...register("entityName", { required: true })}
+                {...register("title", { required: true })}
                 placeholder="Type entity name"
               />
             </div>
@@ -149,7 +190,7 @@ const CreateEntityForm2 = () => {
                 type="text"
                 id="addressLine1"
                 className="bg-zinc-50 border border-zinc-300 text-zinc-900 text-sm rounded-lg focus:ring-zinc-600 focus:border-zinc-700 block w-full p-2.5 dark:bg-zinc-900 dark:border-zinc-700 dark:placeholder-zinc-400 dark:text-white dark:focus:ring-zinc-500 dark:focus:border-zinc-500"
-                {...register("addressLine1", { required: true })}
+                {...register("address_1", { required: true })}
                 placeholder="Address line 1"
                 required
               />
@@ -165,7 +206,7 @@ const CreateEntityForm2 = () => {
                 type="text"
                 id="addressLine2"
                 className="bg-zinc-50 border border-zinc-300 text-zinc-900 text-sm rounded-lg focus:ring-zinc-600 focus:border-zinc-700 block w-full p-2.5 dark:bg-zinc-900 dark:border-zinc-700 dark:placeholder-zinc-400 dark:text-white dark:focus:ring-zinc-500 dark:focus:border-zinc-500"
-                {...register("addressLine2", { required: false })}
+                {...register("address_2", { required: false })}
                 placeholder="Address line 2"
               />
             </div>
@@ -212,7 +253,7 @@ const CreateEntityForm2 = () => {
                 type="text"
                 id="postalCode"
                 className="bg-zinc-50 border border-zinc-300 text-zinc-900 text-sm rounded-lg focus:ring-zinc-600 focus:border-zinc-700 block w-full p-2.5 dark:bg-zinc-900 dark:border-zinc-700 dark:placeholder-zinc-400 dark:text-white dark:focus:ring-zinc-500 dark:focus:border-zinc-500"
-                {...register("postalCode", { required: true })}
+                {...register("postal_code", { required: true })}
                 placeholder="Postal code"
                 required
               />
@@ -234,6 +275,12 @@ const CreateEntityForm2 = () => {
             </div>
           </div>
           <div className="flex items-center space-x-4">
+          <button
+              type="reset"
+              className="text-white duration-300 ease-in-out bg-teal-800 hover:bg-zinc-800 focus:ring-4 focus:outline-none focus:ring-zinc-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-zinc-600 dark:hover:bg-zinc-900 dark:focus:ring-zinc-800"
+            >
+             Reset
+            </button>
             <button
               type="submit"
               className="text-white duration-300 ease-in-out bg-teal-800 hover:bg-zinc-800 focus:ring-4 focus:outline-none focus:ring-zinc-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-zinc-600 dark:hover:bg-zinc-900 dark:focus:ring-zinc-800"
@@ -249,8 +296,6 @@ const CreateEntityForm2 = () => {
   const renderStep2 = () => {
     return (
       <React.Fragment>
-        <TestVideoUpload/>
-
         <form onSubmit={handleSubmit(onSubmitStep2)}>
           <div className="mb-8 text-black dark:text-white">
             <ul className="grid w-full gap-6 md:grid-cols-2">
@@ -299,41 +344,41 @@ const CreateEntityForm2 = () => {
               </li>
             </ul>
           </div>
-          {toRecording && <VideoRecorder toRecording={toRecording} />}
+          {toRecording && <VideoRecorder toRecording={toRecording} ffmpegRef={ffmpegRef} />}
           {toUploaded && (
             <div className="flex items-center justify-center w-full h-full aspect-video">
 
-<div className="hidden">
-              {!videoPreview  ? (
-                <label
-                  htmlFor="file"
-                  className="flex flex-col items-center justify-center w-full border-2 border-zinc-300 border-dashed rounded-lg cursor-pointer bg-zinc-50 dark:hover:bg-bray-800 dark:bg-zinc-700 hover:bg-zinc-100 dark:border-zinc-600 dark:hover:border-zinc-500 dark:hover:bg-zinc-600 aspect-video h-full"
-                >
-                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                    <FaUpload className="text-zinc-500 dark:text-zinc-400 mb-2" />
-                    <p className="mb-2 text-sm text-zinc-500 dark:text-zinc-400">
-                      <span className="font-semibold">Click to upload</span> or
-                      drag and drop
-                    </p>
-                    <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                      MP4, MOV (MAX. 100MB)
-                    </p>
-                  </div>
-                  <input
-                    className="hidden"
-                    type="file"
-                    id="file"
-                    accept="video/*"
-                    {...register("video_url")}
-                    onChange={handleVideoUpload}
+              <div className="w-full">
+                {!videoPreview ? (
+                  <label
+                    htmlFor="file"
+                    className="flex flex-col items-center justify-center w-full border-2 border-zinc-300 border-dashed rounded-lg cursor-pointer bg-zinc-50 dark:hover:bg-bray-800 dark:bg-zinc-700 hover:bg-zinc-100 dark:border-zinc-600 dark:hover:border-zinc-500 dark:hover:bg-zinc-600 aspect-video h-full"
+                  >
+                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                      <FaUpload className="text-zinc-500 dark:text-zinc-400 mb-2" />
+                      <p className="mb-2 text-sm text-zinc-500 dark:text-zinc-400">
+                        <span className="font-semibold">Click to upload</span> or
+                        drag and drop
+                      </p>
+                      <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                        MP4, MOV (MAX. 100MB)
+                      </p>
+                    </div>
+                    <input
+                      className="hidden"
+                      type="file"
+                      id="file"
+                      accept="video/*"
+                      {...register("video_url")}
+                      onChange={handleVideoUpload}
                     // Handle video upload logic here
                     // Once the video is uploaded, set setToUploaded(true)
-                  />
-                </label>
-              ) : (
-                <video controls className="aspect-video" src={videoPreview} />
-              )}
-              '</div>
+                    />
+                  </label>
+                ) : (
+                  <video controls className="aspect-video" src={videoPreview} />
+                )}
+                </div>
             </div>
           )}
         </form>
@@ -369,36 +414,71 @@ const CreateEntityForm2 = () => {
   };
 
   const renderStep3 = () => {
+    const videoSrc = useEntityFormStore.getState().finalVideoUrl!!!;
+  
     return (
-    <div className="text-black dark:text-white">
-      <video controls className="hidden aspect-video">
-        <source src={videoUrl} type="video/*"/>
-        </video>
-      <h1>{watch("entityName")}</h1>
-     <div className="flex"> <p>{watch("addressLine1")}</p>
-      <p>,{watch("addressLine2")}</p>
-      </div>
-<div className="flex">
-      <p>{watch("city")}</p>
-      <p>,{watch("state")}</p>
-      <p>,{watch("postalCode")}</p>
-      </div>
-      <p>{watch("description")}</p>
-
-      <button
-            type="button"
-            onClick={() => handleChangeStep(2)}
-            className="text-white duration-300 ease-in-out bg-teal-800 hover:bg-zinc-800 focus:ring-4 focus:outline-none focus:ring-zinc-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-zinc-600 dark:hover:bg-zinc-900 dark:focus:ring-zinc-800"
-          >
-            Back
-          </button>
+      <div className="text-black dark:text-white">
+        <video controls className="aspect-video rounded-md" src={videoSrc}  />
+        <form className="w-full" onSubmit={handleSubmit(handleFormSubmit)}>
+        <div className="mt-6 p-4 bg-zinc-100 dark:bg-zinc-950 w-full rounded-md border border-zinc-200 dark:border-zinc-800" >
+        <table className="rounded-md w-full">
+          <tbody className="rounded-md ">
+            <tr className="border-b   border-zinc-200 dark:border-zinc-800 ">
+              <td className="pr-4 py-2 font-semibold">Entity Name:</td>
+              <td>{watch("title")}</td>
+            </tr>
+            <tr className="border-b   border-zinc-200 dark:border-zinc-800 ">
+              <td className="pr-4 py-2 font-semibold">Address Line 1:</td>
+              <td>{watch("address_1")}</td>
+            </tr>
+            <tr className="border-b   border-zinc-200 dark:border-zinc-800 ">
+              <td className="pr-4 py-2 font-semibold">Address Line 2:</td>
+              <td>{watch("address_2")}</td>
+            </tr>
+            <tr className="border-b   border-zinc-200 dark:border-zinc-800 ">
+              <td className="pr-4 py-2 font-semibold">City:</td>
+              <td>{watch("city")}</td>
+            </tr>
+            <tr className="border-b   border-zinc-200 dark:border-zinc-800 ">
+              <td className="pr-4 py-2 font-semibold">State:</td>
+              <td>{watch("state")}</td>
+            </tr>
+            <tr className="border-b   border-zinc-200 dark:border-zinc-800 ">
+              <td className="pr-4 py-2 font-semibold">Postal Code:</td>
+              <td>{watch("postal_code")}</td>
+            </tr>
+            <tr>
+              <td className="pr-4 py-2 font-semibold">Description:</td>
+              <td>{watch("description")}</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+  
+        <button
+          type="submit"
+         // onClick={handleFormSubmit}
+          className="mt-6 text-white duration-300 ease-in-out bg-teal-800 hover:bg-zinc-800 focus:ring-4 focus:outline-none focus:ring-zinc-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-zinc-600 dark:hover:bg-zinc-900 dark:focus:ring-zinc-800"
+        >
+          Create Entity
+        </button>
  
-    </div>);
+        </form>
+        <button
+         type="button"
+         onClick={() => handleChangeStep(2)}
+          className="mt-6 text-white duration-300 ease-in-out bg-teal-800 hover:bg-zinc-800 focus:ring-4 focus:outline-none focus:ring-zinc-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-zinc-600 dark:hover:bg-zinc-900 dark:focus:ring-zinc-800"
+        >
+          Back
+        </button>
+      </div>
+    );
   };
+  
 
   const renderStep4 = () => {
     return (
-      <MediaRenderer mimeType="video/*" src="ipfs://QmcTmjZN6sV2vJyZ4B2QG8GFWW5sugBDKg5aEqoyZAxdK8"/>
+      <MediaRenderer mimeType="video/*" src="ipfs://QmcTmjZN6sV2vJyZ4B2QG8GFWW5sugBDKg5aEqoyZAxdK8" />
     )
   }
   return (
@@ -409,10 +489,10 @@ const CreateEntityForm2 = () => {
           {step === 2 && "Step 2"}
           {step === 3 && "Step 3"}
         </h2>
-        {step === 4 && renderStep1()}
-        {step === 1 && renderStep2()}
+        {step === 1 && renderStep1()}
+        {step === 2 && renderStep2()}
         {step === 3 && renderStep3()}
-        {step === 2 && renderStep4()}
+        {step === 4 && renderStep4()}
 
       </div>
     </div>

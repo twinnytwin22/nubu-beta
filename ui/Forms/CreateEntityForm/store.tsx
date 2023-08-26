@@ -11,7 +11,9 @@ interface EntityFormState {
   postalCode: string;
   description: string;
   step: number;
-  videoUrl: string;
+  videoUrl: File |  null;
+  finalVideoUrl: string | null;
+
   toRecording: boolean;
   toUploaded: boolean;
 setVideoPreview:(videoPreview: string) => void;
@@ -23,7 +25,7 @@ setVideoPreview:(videoPreview: string) => void;
   setPostalCode: (code: string) => void;
   setDescription: (description: string) => void;
   setStep: (step: number) => void;
-  setVideoUrl: (videoUrl: string) => void;
+  setVideoUrl: (videoUrl: File | null) => void;
   setToRecording: (value: boolean) => void;
   setToUploaded: (value: boolean) => void;
   handleFormSubmit: (event: React.FormEvent) => void;
@@ -40,7 +42,8 @@ const useEntityFormStore = create<EntityFormState>((set, get) => ({
   postalCode: "",
   description: "",
   step: 1,
-  videoUrl: "",
+  videoUrl: null,
+  finalVideoUrl: null,
   toRecording: false,
   toUploaded: false,
   videoPreview: '',
@@ -62,7 +65,7 @@ setVideoPreview:(videoPreview)=>set({videoPreview:videoPreview}),
   },
   handleChangeStep: (step) => set({ step: step }),
   logVideo: () => {
-    console.log(` Upload URL: ${get().videoUrl}`);
+    console.log(` Upload URL: ${get().finalVideoUrl}`);
   },
 }));
 

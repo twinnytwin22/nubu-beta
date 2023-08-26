@@ -15,10 +15,15 @@ export function useBgImagePath(url: string) {
     return imagePath;
 }
 
-export function useIpfsImage(url: string) {
-    const imagePath = url?.replace("ipfs://", "https://cloudflare-ipfs.com/ipfs/")
+export function useIpfsUrl(url: string) {
+    const imagePath = url?.replace("ipfs://",`https://${ipfs.hostname}/ipfs/`)
     return imagePath
-}
+  }
+  
+  export const ipfs = { 
+    gatewayUrl: 'https://cloudflare-ipfs.com/ipfs/',
+    hostname:'053c144674e91fcc39bf3a56a7511a32.ipfscdn.io'
+  } 
 export const defaultUserImage = "/images/icons/default_user_image.jpg";
 export const homePath = 'https://subport.vercel.app'
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;

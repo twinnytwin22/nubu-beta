@@ -9,7 +9,7 @@ export async function GET(request: Request) {
   const refreshCache = searchParams.get("refreshCache");
   const userId = searchParams.get("userId");
 
-  const cacheKey = "all_orgs_cache"; // Specify a cache key for all orgs' data
+  const cacheKey = "all_orgs_cache2"; // Specify a cache key for all orgs' data
 
   try {
     // Check if the query parameter "refresh" is set to true
@@ -37,7 +37,7 @@ export async function GET(request: Request) {
     // Store the response in Redis cache
     await redisSet(cacheKey, JSON.stringify(orgs));
 
-    return new Response(JSON.stringify(orgs));
+    return new Response(JSON.stringify({orgs, ok: true}));
   } catch (error) {
     console.error("Error fetching orgs:", error);
     return new Response("Error fetching orgs");

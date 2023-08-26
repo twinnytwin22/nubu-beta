@@ -5,12 +5,13 @@ import { ImRedo2 } from "react-icons/im";
 import { useMediaStore } from "./store";
 import { useStorageUpload } from "@thirdweb-dev/react";
 import useEntityFormStore from "@/ui/Forms/CreateEntityForm/store";
-import { useIpfsImage } from "@/lib/site/constants";
+import { useIpfsUrl } from "@/lib/site/constants";
 import TimeLapsed from "./TimeLapsed";
 import { Worker, isMainThread, parentPort } from 'worker_threads';
+import { transcode } from "@/lib/providers/ffmpeg";
 
 
-const VideoRecorder = ({toRecording}) => {
+const VideoRecorder = ({toRecording, ffmpegRef}) => {
   const {
     mediaStream,
     mediaRecorder,
@@ -30,9 +31,9 @@ const VideoRecorder = ({toRecording}) => {
     setUploading,
     setInProgress,
   } = useMediaStore();
-  const { logVideo } = useEntityFormStore();
+  const { logVideo, videoUrl, finalVideoUrl } = useEntityFormStore();
   const [resetRecording, setResetRecording] = useState(false);
-  const [videoFile, setVideoFile] = useState<any>([]);
+  const [VideoFile, setVideoFile] = useState<any>([]);
   const { mutateAsync: upload } = useStorageUpload({
     uploadWithoutDirectory: true,
     onProgress: (progress) => {
@@ -54,27 +55,27 @@ const VideoRecorder = ({toRecording}) => {
 
   const startUpload = async () => {
     try {
-      if (videoSourceURL) {
+      if (videoUrl) {
         setInProgress("video");
-        // Convert recorded chunks into a Blob
-        // Create a File object from the Blob (optional, but might be needed depending on your upload function)
-     //   console.log(videoFile, "FILE");
-        // Upload the video
+        const ffmpeg = ffmpegRef.current;
+        const transcodedVideo = await transcode(videoUrl, ffmpeg)
+        const videoFile = new File([transcodedVideo], "video.mp4", { type: "video/mp4" });
         const videoUri = await upload({
           data: [videoFile],
         });
-
-        // Handle the response from the upload, e.g., show a success message
-        const finalUrl = useIpfsImage(videoUri[0]);
-        useEntityFormStore.setState({ videoUrl: finalUrl });
+        const finalUrl = useIpfsUrl(videoUri[0]);
+        if(finalUrl) {
+        useEntityFormStore.setState({ finalVideoUrl: finalUrl });
+        }
         logVideo();
         setUploaded(true)
-       // console.log(finalUrl + ".mp4");
       }
     } catch (error) {
       // Handle upload errors
       console.error("Upload error:", error);
     }
+    console.log(useEntityFormStore.getState().finalVideoUrl, "URL");
+
   };
   const resetRecordingState = async () => {
     // Reset all recording-related state variables
