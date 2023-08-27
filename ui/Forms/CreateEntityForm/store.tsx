@@ -13,10 +13,10 @@ interface EntityFormState {
   step: number;
   videoUrl: File |  null;
   finalVideoUrl: string | null;
-
+  imagePreview: string | null;
   toRecording: boolean;
   toUploaded: boolean;
-setVideoPreview:(videoPreview: string) => void;
+  setVideoPreview:(videoPreview: string) => void;
   setEntityName: (name: string) => void;
   setAddressLine1: (address: string) => void;
   setAddressLine2: (address: string) => void;
@@ -41,6 +41,7 @@ const useEntityFormStore = create<EntityFormState>((set, get) => ({
   state: "",
   postalCode: "",
   description: "",
+  imagePreview: null,
   step: 1,
   videoUrl: null,
   finalVideoUrl: null,
