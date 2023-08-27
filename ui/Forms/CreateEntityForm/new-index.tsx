@@ -12,6 +12,7 @@ import { load, transcode } from "@/lib/providers/ffmpeg";
 import useVideoConverterStore from "@/lib/providers/ffmpeg/store";
 import { industryOptions } from "@/lib/site/industryOptions";
 import { AiFillCloseCircle } from "react-icons/ai";
+import Image from "next/image";
 const ffMpeg = new FFmpeg();
 
 const CreateEntityForm2 = () => {
@@ -348,7 +349,7 @@ const CreateEntityForm2 = () => {
               </button>
               </div>
               <div className="flex items-center justify-center w-full mb-2  mx-auto col-span-2">
-            {!imagePreview && (
+            {!imagePreview ? (
               <label
                 htmlFor="file"
                 className="flex flex-col items-center justify-center w-full aspect-video border-2 border-zinc-300 border-dashed rounded-md cursor-pointer bg-zinc-50 dark:hover:bg-bray-800 dark:bg-zinc-900 hover:bg-zinc-100 dark:border-zinc-700 dark:hover:border-zinc-700 dark:hover:bg-zinc-800"
@@ -372,14 +373,18 @@ const CreateEntityForm2 = () => {
                   onChange={handleImageUpload}
                 />
               </label>
-            )}
-            {imagePreview ? (
-              <img
-                className="w-96 rounded-md"
+            )
+             :(
+              <div>
+              <Image
+                width={1600}
+                height={900}
+                className="flex flex-col items-center justify-center w-full aspect-video border border-zinc-300  rounded-md cursor-pointer   dark:border-zinc-700 dark:hover:border-zinc-700 "
                 src={imagePreview}
                 alt="preview"
               />
-            ) : null}
+              </div>
+            )}
           </div>
             <div className="sm:col-span-2">
               <label

@@ -1,5 +1,8 @@
 import React from 'react'
 import { headers } from 'next/headers';
+export const revalidate = 0
+
+export const dynamic = 'force-dynamic'
 export default async function Page({
     params,
 }: {
@@ -20,7 +23,7 @@ export default async function Page({
     return entity ? (
         <div className='h-full max-w-screen-lg mx-auto text-black dark:text-white'>
         <div>
-            <video controls src={entity.video_url} className='w-full mx-auto rounded-lg '/>
+            <video controls src={entity?.video_url} className='w-full mx-auto rounded-lg '/>
             <div className='flex justify-between items-center'>
             <h1 className='text-2xl font-bold'>
                 {entity.title}

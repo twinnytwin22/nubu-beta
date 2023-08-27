@@ -14,7 +14,7 @@ export async function GET (request: Request) {
     let { data: orgs, error } = await supabaseApi
       .from('orgs')
       .select('*')
-      .eq('id', 'ed674594-1ddc-427f-b6e5-fa1963dff1ea')
+      .eq('id', entityId)
       .single()
 
     if (error) {
