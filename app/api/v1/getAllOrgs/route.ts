@@ -7,7 +7,7 @@ export const revalidate = 0;
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const refreshCache = searchParams.get("refreshCache");
-  const cacheKey = "all_orgs_cache"; // Specify a cache key for all orgs' data
+  const cacheKey = "entity_data_cache"
 
   try {
     // Check if the query parameter "refresh" is set to true

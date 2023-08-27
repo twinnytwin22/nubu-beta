@@ -38,11 +38,11 @@ async function ProfilePage() {
                             </button>
                         </Link>
                     </div>
-                    <div className='relative flex top-1/3 h-fit mx-auto w-full'>
+                    <div className='relative flex top-1/3 h-full mx-auto w-full'>
                     <Suspense>
 
                         {userOrgs.length > 0 ? (
-                            <div className='text-black dark:text-white min-h-full w-full mx-auto space-y-4 '>
+                            <div className='text-black dark:text-white min-h-full w-full mx-auto space-y-4 h-full'>
                                 {userOrgs.map((profile: any ) => (
                                 <BusinessProfileCard profile={profile}/>))}
                             </div>
@@ -52,8 +52,6 @@ async function ProfilePage() {
                                 <Link href={'/portal/entity/create'} className=''>
                                     <p className='mx-auto justify-center text-center underline text-teal-800 dark:text-teal-600'>Create Entity</p>
                                 </Link>
-                                <p>{JSON.stringify(userOrgs?.orgs)}</p>
-
                             </div>
                         )}
                          </Suspense>

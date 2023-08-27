@@ -19,8 +19,8 @@ function PortalLayout({ children }: { children: React.ReactNode }) {
                 >
                     &#9776; {/* Hamburger icon */}
                 </button>
-                <div className='md:ml-64  mx-auto max-h-screen h-full  transition-transform'>
-                    <div className='relative w-full h-full top-24 left-0 right-0  '>
+                <div className='md:ml-64  mx-auto max-h-[70vh] h-full  transition-transform'>
+                    <div className='relative w-full h-full top-24 left-0 right-0 '>
                         <Suspense>
                         {children}
                         </Suspense>

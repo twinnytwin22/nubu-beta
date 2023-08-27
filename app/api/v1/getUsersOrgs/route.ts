@@ -9,7 +9,7 @@ export async function GET(request: Request) {
   const refreshCache = searchParams.get("refreshCache");
   const userId = searchParams.get("userId");
 
-  const cacheKey = "all_orgs_cache2"; // Specify a cache key for all orgs' data
+  const cacheKey = "entity_data_cache"
 
   try {
     // Check if the query parameter "refresh" is set to true
