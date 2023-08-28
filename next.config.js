@@ -35,7 +35,7 @@ const mediaSecurityHeaders = [
 const nextConfig = {
   experimental: {
     appDir: true,
-    serverActions: true,
+ //   serverActions: true,
    // nextScriptWorkers: true,
   },
   images: {
